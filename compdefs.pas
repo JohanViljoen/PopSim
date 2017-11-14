@@ -1,0 +1,89 @@
+//{$DEFINE OUERS}             //Used to gather statistics on the number of progeny each individual produces
+//{$DEFINE ENKELOUER}         //Used to allow single individual to be both parents
+//{$DEFINE GESLAGTE}          //Divide the population into male and female, and insist that the parents be of different sexes
+
+
+(*  What's New
+2017-11-11 v1.46
+- Fixed the Monte Carlo speed indicator (runs/second) to work like the speed
+indicator below (v1.44), switching to s/run when dropping below 0.2 runs/s.
+- Added an estimate of time to finish (ETA) to the Monte Carlo function
+
+
+2017-10-14 v1.45
+- Resets the time constant of the speed indicator when any of the important
+parameters change - this allows the speed to adapt much faster to the new value.
+- Tried to fix the habit of the Width and Height to jump to display screen sizes
+even when 'Display' is not checked.
+- Momentarily disable the 'Run' button while initialising/updating tables, to
+prevent it being clicked when the simulation is in an undefined state.
+
+
+2017-10-12 v1.44
+- Increased the maximum population to 10000x10000 = 100 million. It is very slow
+when the population is maximal.
+- Changed the type counters to type Int64 to prevent numeric overflow when large
+populations are used, as made possible above.
+- Improved UI responsivity when using large populations, which can take many
+seconds per generation.
+- Fixed the speed indicator (generations/second) to work better, especially
+when the speed is low. Also switch to seconds/generation when the speed drops
+below 0.2 gen/s.
+
+
+2017-09-09 v1.43
+- Increased the resolution of the Advantage spinboxes on the main form to 4
+decimals.
+- Minor layout adjustments on the main form
+- Limited the Width and Height on the Monte Carlo screen to the maximum
+allowable values.
+- Automatically update on the main form the various parameters used by
+the Monte Carlo process
+- Added a 'Use previous' checkbox for the equilibrium establishment on the
+Monte Carlo screen. If checked, the field is only initialised at the start, or
+when all carriers have become extinct.
+
+
+2017-09-05 V1.42
+- Changed the 'Initial prevalence' box on the Monte Carlo screen to increment by
+0.01% instead of 1% steps.
+
+2017-08-04 v1.41
+- Added the GESLAGTE compiler directive to split the population into sexes.
+Not to be used in conjunction with ENKELOUER, of course.
+
+
+2017-07-29 v1.40
+- Updated the 'Save' function on the prevalence graph to also save the Wild type
+
+
+2017-07-08 v1.39
+- Added ENKELOUER compiler directive to allow the same individual to be chosen as
+both parents (to see if it makes a difference. It does.)
+- Fixed the dwNumberOfProcessors value when assigning process to processor (was
+using it without initialising
+
+
+2017-07-07 v1.38
+- Added Logarithmic stepping of Heterozygotic Advantage in Monte Carlo. Starts
+at max and reduces until < min (which has to be >0)
+
+
+2017-06-22
+- Reduced maksbreedte & makshoogte to 3000
+- Made {$MAXSTACKSIZE $01000000} - it was {$MAXSTACKSIZE $018000000} - not sure
+what this does
+- Always initialize cdf during MC runs, also when using flat distribution
+
+2017-06-20
+- Reduced maxcdfstappe to 60k to speed things up
+- Set the process affinity on startup to a single core, equal to (one less than)
+the number of the specific current instance. This can be changed in the Windows
+Task Manager, if desired. Uses JvAppInstances.
+
+
+2017-06-14
+- Fixed display, which did not update changed pixels quite correctly. Seems to
+work now.
+
+*)
