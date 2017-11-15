@@ -446,6 +446,11 @@ Checkbox11.visible:=True;
 Checkbox11.Visible:=False;
 {$ENDIF}
 
+{$IFDEF HIDEMULTIPLETYPES}
+Form1.CheckBox2.Visible:=False;
+Form1.CheckBox5.Visible:=False;
+{$ENDIF}
+
 //  SetPriorityClass(GetCurrentProcess(),BELOW_NORMAL_PRIORITY_CLASS);   //IDLE_PRIORITY_CLASS, BELOW_NORMAL_PRIORITY_CLASS, NORMAL_PRIORITY_CLASS, ABOVE_NORMAL_PRIORITY_CLASS, HIGH_PRIORITY_CLASS, REALTIME_PRIORITY_CLASS
 
 i:=JvAppInstances1.AppInstances.SessionInstanceCount;
@@ -458,6 +463,7 @@ SetProcessAffinityMask( GetCurrentProcess, SysAFMAsk);
 
 b:=trunc(ln(SysAFMask)/ln(2));
 form1.Caption:=form1.Caption+' : CPU '+inttostr(b)+'/'+inttostr(a);
+
 
 
 

@@ -1,9 +1,14 @@
 //{$DEFINE OUERS}             //Used to gather statistics on the number of progeny each individual produces
 //{$DEFINE ENKELOUER}         //Used to allow single individual to be both parents
 //{$DEFINE GESLAGTE}          //Divide the population into male and female, and insist that the parents be of different sexes
+{$DEFINE HIDEMULTIPLETYPES} //Hide the controls for Multiple types until we figure out how to use it
 
 
 (*  What's New
+2017-11-15 v1.47
+- Display the total time taken by a Monte Carlo run when it finishes.
+- Hide the controls for Multiple types until we figure out how to use it.
+
 2017-11-11 v1.46
 - Fixed the Monte Carlo speed indicator (runs/second) to work like the speed
 indicator below (v1.44), switching to s/run when dropping below 0.2 runs/s.

@@ -6,7 +6,7 @@ uses
   Graphics;
 
 const
-  psversion='PopSim 1.46  2017-11-11';
+  psversion='PopSim 1.47  2017-11-15';
   maksbreedte = 10000;
   makshoogte = 10000;
 
@@ -123,6 +123,8 @@ var
   MCTeller:integer;
   MCRuns:integer;
   MCbegin:integer;
+  aanvangstyd,eindtyd:Longword;
+
 
   tydnou,tydvorige:LongWord;
   sktyd:integer;

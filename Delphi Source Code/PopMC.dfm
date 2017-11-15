@@ -446,6 +446,7 @@ object MCForm: TMCForm
     Anchors = [akLeft, akTop, akRight, akBottom]
     ScrollBars = ssVertical
     TabOrder = 1
+    WordWrap = False
   end
   object RadioButton1: TRadioButton
     Left = 8

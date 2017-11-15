@@ -276,14 +276,24 @@ var age:integer;
 
 procedure maakleerordeliktoe;
 var s:string;
+    tt:real;
+    h,m,ss:integer;
 begin
   flush(uitleer);
+  eindtyd:=Gettickcount;
+  tt:=(eindtyd-aanvangstyd)/1000;
 //  repeat until isbesig=False;
   memo1.lines.add('***');
   writeln(uitleer,'***');
   flush(uitleer);
-  s:=Datetostr(Date)+' - '+TimeToStr(Time);
+  s:=Datetostr(Date)+' - '+TimeToStr(Time)+' - Total Time : '+inttostr(trunc(tt))+'s';
   memo1.lines.add(s);writeln(uitleer,s);
+
+  h:=trunc(tt/3600);tt:=tt-h*3600;
+  m:=trunc(tt/60);tt:=tt-m*60;
+  ss:=trunc(tt);
+
+  MCForm.label13.Caption:='Time : '+inttostr(h)+'h'+inttostr(m)+'m'+inttostr(ss)+'s';
   flush(uitleer);
   closefile(uitleer);
   Button1.Caption:='Run';beep;
@@ -295,6 +305,7 @@ begin
   hetinis:=False;
   beginpersentasie:=PBSuperSpin12.Value;
   MCbegin:=tydteller;
+
   breedte:=trunc(PBSuperSpin7.value);
   hoogte:=trunc(PBSuperSpin11.value);
   Form1.ScrollBar3.position:=breedte;
@@ -315,6 +326,7 @@ begin
   CheckBox2Click(self);
   if MCBesig1=False then
   begin
+    aanvangstyd:=GetTickCount;
     s:=Datetostr(Date)+' - '+TimeToStr(Time);s2:='';for i:=1 to length(s) do if not(s[i] in ['/',':',' ']) then s2:=s2+s[i];
     assignfile(uitleer,'MC'+s2+'.txt');
     rewrite(uitleer);

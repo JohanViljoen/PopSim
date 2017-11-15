@@ -9,7 +9,6 @@ uses
   Popdefs in 'Popdefs.pas',
   Pophis in 'Pophis.pas' {Hisblad},
   PopMC in 'PopMC.pas' {MCForm}
-// , FasterThread in 'FasterThread.pas'
 ;
 
 {$R *.res}
