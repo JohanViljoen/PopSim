@@ -5,6 +5,12 @@
 
 
 (*  What's New
+2017-11-16 v1.48
+- Also take into account the homozygotic prevalence before declaring extinction
+during Monte Carlo runs.
+- Fixed a file access error that could occur when interrupting a Monte Carlo run.
+
+
 2017-11-15 v1.47
 - Display the total time taken by a Monte Carlo run when it finishes.
 - Hide the controls for Multiple types until we figure out how to use it.

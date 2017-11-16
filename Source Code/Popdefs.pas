@@ -6,7 +6,7 @@ uses
   Graphics;
 
 const
-  psversion='PopSim 1.47  2017-11-15';
+  psversion='PopSim 1.48  2017-11-16';
   maksbreedte = 10000;
   makshoogte = 10000;
 

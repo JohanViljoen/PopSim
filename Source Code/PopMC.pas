@@ -263,7 +263,13 @@ begin
 
 end;
 
-
+function IsOpen(const txt:TextFile):Boolean;
+const
+  fmTextOpenRead = 55217;
+  fmTextOpenWrite = 55218;
+begin
+  Result := (TTextRec(txt).Mode = fmTextOpenRead) or (TTextRec(txt).Mode = fmTextOpenWrite)
+end;
 
 procedure TMCForm.Button1Click(Sender: TObject);
 var age:integer;
@@ -279,23 +285,20 @@ var s:string;
     tt:real;
     h,m,ss:integer;
 begin
-  flush(uitleer);
+  if IsOpen(uitleer) then flush(uitleer);
   eindtyd:=Gettickcount;
   tt:=(eindtyd-aanvangstyd)/1000;
 //  repeat until isbesig=False;
-  memo1.lines.add('***');
-  writeln(uitleer,'***');
-  flush(uitleer);
+  if IsOpen(uitleer) then begin writeln(uitleer,'***');memo1.lines.add('***');end;
+  if IsOpen(uitleer) then flush(uitleer);
   s:=Datetostr(Date)+' - '+TimeToStr(Time)+' - Total Time : '+inttostr(trunc(tt))+'s';
-  memo1.lines.add(s);writeln(uitleer,s);
+  if IsOpen(uitleer) then begin memo1.lines.add(s);writeln(uitleer,s);end;
 
   h:=trunc(tt/3600);tt:=tt-h*3600;
   m:=trunc(tt/60);tt:=tt-m*60;
   ss:=trunc(tt);
-
   MCForm.label13.Caption:='Time : '+inttostr(h)+'h'+inttostr(m)+'m'+inttostr(ss)+'s';
-  flush(uitleer);
-  closefile(uitleer);
+  if IsOpen(uitleer) then begin flush(uitleer);closefile(uitleer);end;
   Button1.Caption:='Run';beep;
 
 end;
@@ -396,7 +399,7 @@ begin
           if MCBesig1=False then begin maakleerordeliktoe;exit;end;
           s:='';
 
-          if ((Radiobutton1.Checked=True) or (hetinis=False) or (checkbox5.Checked=False) or (draerteller=0)) then
+          if ((Radiobutton1.Checked=True) or (hetinis=False) or (checkbox5.Checked=False) or ((draerteller=0) and (siekteller=0))) then
           //Clear all
           for b:=0 to hoogte-1 do
           begin
@@ -410,7 +413,7 @@ begin
 
               //Pas oorlewingsvoordeel toe
               if (random(drempelskaal)>drempels[popskik^[a,b].status]) then popskik^[a,b].status:=dood;
-              draerteller:=0;
+              draerteller:=0;siekteller:=0;
 
             end;
           end;
@@ -422,10 +425,10 @@ begin
             popskik^[breedte div 2,hoogte div 2].status:=draer;
             popskik^[breedte div 2,hoogte div 2].g[1]:=draer;
             popskik^[breedte div 2,hoogte div 2].g[2]:=skoon;
-            draerteller:=1;
+            draerteller:=1;siekteller:=0;
           end else //Inisieer met beginvoorkoms
           begin
-            if ((hetinis=False) or (CheckBox5.checked=False) or (draerteller=0)) then
+            if ((hetinis=False) or (CheckBox5.checked=False) or ((draerteller=0) and (siekteller=0))) then
             for b:=0 to hoogte -1 do
             begin
               for a:=0 to breedte-1 do
@@ -473,7 +476,7 @@ begin
 //            if (((generasieteller-1) mod grafiekskoonmaakdrempel)>=grafiekskoonmaakdrempel-4) then begin form1.series1.clear;Form1.series2.Clear;end;
             inc(age);
             if draerteller>maxcolony then maxcolony:=draerteller;
-          until ((draerteller=0) or ((radiobutton1.Checked=True) and (draerteller>=PBSuperSpin1.value)) {or ((radiobutton2.Checked=True) and (stabiel=True))} or (age>=PBSuperSpin6.Value) or (MCBesig1=False));
+          until (((draerteller=0) and (siekteller=0)) or ((radiobutton1.Checked=True) and (draerteller>=PBSuperSpin1.value)) {or ((radiobutton2.Checked=True) and (stabiel=True))} or (age>=PBSuperSpin6.Value) or (MCBesig1=False));
 
 {$IFDEF OUERS}
 form1.checkbox11.checked:=True;
