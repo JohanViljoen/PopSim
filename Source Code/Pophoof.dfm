@@ -1,8 +1,8 @@
 object Form1: TForm1
   Left = 406
   Top = 209
-  Width = 752
-  Height = 496
+  Width = 737
+  Height = 487
   Caption = 'PopSim'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -55,9 +55,9 @@ object Form1: TForm1
     OnClick = Button3Click
   end
   object Chart1: TChart
-    Left = 8
+    Left = 0
     Top = 159
-    Width = 713
+    Width = 721
     Height = 290
     BackWall.Brush.Color = clWhite
     BackWall.Brush.Style = bsClear
@@ -83,7 +83,7 @@ object Form1: TForm1
     Color = clWhite
     TabOrder = 2
     DesignSize = (
-      713
+      721
       290)
     object Label13: TLabel
       Left = 7
@@ -111,7 +111,7 @@ object Form1: TForm1
       OnClick = Button5Click
     end
     object CheckBox3: TCheckBox
-      Left = 616
+      Left = 624
       Top = 6
       Width = 89
       Height = 17
@@ -295,13 +295,15 @@ object Form1: TForm1
       OnChange = ScrollBar4Change
     end
     object PBSuperSpin3: TPBSuperSpin
-      Left = 72
+      Left = 64
       Top = 125
-      Width = 73
+      Width = 81
       Height = 22
       Cursor = crDefault
       Alignment = taRightJustify
-      Decimals = -1
+      Decimals = 3
+      MaxValue = 9999999
+      MinValue = 1
       NumberFormat = Standard
       OnChange = PBSuperSpin3Change
       TabOrder = 2
@@ -498,7 +500,7 @@ object Form1: TForm1
     object PBSuperSpin1: TPBSuperSpin
       Left = 144
       Top = 48
-      Width = 75
+      Width = 77
       Height = 22
       Cursor = crDefault
       Alignment = taRightJustify
@@ -550,7 +552,7 @@ object Form1: TForm1
     object PBSuperSpin4: TPBSuperSpin
       Left = 144
       Top = 72
-      Width = 75
+      Width = 77
       Height = 22
       Cursor = crDefault
       Alignment = taRightJustify

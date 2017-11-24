@@ -1,6 +1,6 @@
 object MCForm: TMCForm
-  Left = 1352
-  Top = 126
+  Left = 214
+  Top = 121
   Width = 491
   Height = 789
   Caption = 'Monte Carlo'
@@ -115,6 +115,15 @@ object MCForm: TMCForm
         RoundValues = False
         Wrap = False
       end
+      object CheckBox6: TCheckBox
+        Left = 96
+        Top = 92
+        Width = 41
+        Height = 17
+        Caption = 'Log'
+        TabOrder = 3
+        OnClick = CheckBox6Click
+      end
     end
     object GroupBox3: TGroupBox
       Left = 168
@@ -198,6 +207,7 @@ object MCForm: TMCForm
         NumberFormat = Standard
         OnChange = PBSuperSpin2Change
         TabOrder = 2
+        Value = 0.1
         Increment = 0.001
         RoundValues = False
         Wrap = False
@@ -389,7 +399,7 @@ object MCForm: TMCForm
         NumberFormat = Standard
         OnChange = PBSuperSpin13Change
         TabOrder = 0
-        Value = 2
+        Value = -100
         Increment = 0.01
         RoundValues = False
         Wrap = False
@@ -407,7 +417,7 @@ object MCForm: TMCForm
         NumberFormat = Standard
         OnChange = PBSuperSpin13Change
         TabOrder = 1
-        Value = 4
+        Value = -100
         Increment = 0.01
         RoundValues = False
         Wrap = False
@@ -423,6 +433,7 @@ object MCForm: TMCForm
         NumberFormat = Standard
         OnChange = PBSuperSpin13Change
         TabOrder = 2
+        Value = 1
         Increment = 0.001
         RoundValues = False
         Wrap = False
@@ -589,7 +600,8 @@ object MCForm: TMCForm
       'CheckBox2.Checked'
       'CheckBox3.Checked'
       'CheckBox4.Checked'
-      'CheckBox5.Checked')
+      'CheckBox5.Checked'
+      'CheckBox6.Checked')
     StoredValues = <>
     Left = 64
     Top = 360
