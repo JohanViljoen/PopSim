@@ -5,5 +5,5 @@ Operating System: Microsoft Windows
 
 Language: Delphi 6
 
-v1.48 2017-11-16
+v1.49 2017-11-24
 

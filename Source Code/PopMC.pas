@@ -62,6 +62,7 @@ type
     CheckBox3: TCheckBox;
     CheckBox4: TCheckBox;
     CheckBox5: TCheckBox;
+    CheckBox6: TCheckBox;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -81,6 +82,7 @@ type
     procedure FormResize(Sender: TObject);
     procedure CheckBox3Click(Sender: TObject);
     procedure CheckBox4Click(Sender: TObject);
+    procedure CheckBox6Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -92,7 +94,7 @@ type
                    homa:real;
                    dn:real;
                    b,h:integer;
-                   gemgrootte:integer;
+                   gemgrootte:real;
                    begpersentasie:real;
                    vertoon,grafieke,histog:Boolean;
                    horlosieinterval:integer;
@@ -158,6 +160,8 @@ procedure TMCForm.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   if MCbesig1 then Button1Click(self);
 
+  if form1.series1.Count>grafiekskoonmaakdrempel then begin form1.series1.clear;Form1.series2.Clear;end;
+
   form1.GroupBox1.Enabled:=True;
   form1.GroupBox2.Enabled:=True;
   form1.Button2.Enabled:=True;
@@ -186,11 +190,35 @@ begin
   if ((RadioButton1.Checked=False) and (RadioButton2.checked=False)) then RadioButton1.Checked:=True;
   MCForm.RadioButton1Click(self);
   MCForm.CheckBox3Click(self);
+  if MCform.HorzScrollBar.IsScrollBarVisible or MCForm.VertScrollBar.IsScrollBarVisible then
+  begin
+    MCform.AutoSize:=True;
+    MCform.ScrollBy(1,1);
+    MCform.Repaint;
+    MCform.AutoSize:=False;
+  end;
 
 end;
 
 procedure TMCForm.FormShow(Sender: TObject);
 begin
+  if form1.CheckBox7.Checked then
+  begin
+    PBSuperspin8.MinValue:=1;
+    PBSuperspin8.Decimals:=3;
+    PBSuperspin9.MinValue:=1;
+    PBSuperspin9.Decimals:=3;
+    PBSuperspin10.Decimals:=3;
+
+  end else
+  begin
+    PBSuperSpin8.MinValue:=2;if PBSuperspin8.Value<2 then PBSuperspin8.Value:=2;
+    PBSuperspin8.Decimals:=0;
+    PBSuperspin9.MinValue:=2;
+    PBSuperspin9.Decimals:=0;
+    PBSuperspin10.Decimals:=0;
+  end;
+
   krystatus;
   label13.Caption:='';
   PBSuperSpin7Change(self);
@@ -208,12 +236,26 @@ var
 begin
   if tydteller<2 then exit;
   comsteps:=0;
-  w:=PBSuperSpin8.value;
+  if checkbox6.Checked then
+  begin  //Logaritmies
+    w:=PBSuperSpin9.value;
+    if PBSuperSpin9.Value>0 then
+    repeat
+      w:=(w*((PBSuperspin9.Value-PBSuperspin10.Value)/(PBSuperspin9.Value)));
+      if not(form1.checkbox7.Checked) then w:=trunc(w);  //Plat verspreiding
+
+      inc(comsteps);
+    until ((w<=0) or (abs(w)<abs(PBSuperSpin8.value)) or (PBSuperspin8.Value<=0) or (PBSuperspin10.Value=0) or ((PBSuperspin8.Value/PBSuperspin9.value)<=0));
+
+  end else
+  begin
+    w:=PBSuperSpin8.value;
 //  if w>PBSuperSpin9.value then PBSuperSpin9.Value:=w;
-  repeat
-    w:=w+PBSuperSpin10.Value;
-    inc(comsteps);
-  until ((w>PBSuperSpin9.Value+eps) or (PBSuperSpin10.Value<=0));
+    repeat
+      w:=w+PBSuperSpin10.Value;
+      inc(comsteps);
+    until ((w>PBSuperSpin9.Value+eps) or (PBSuperSpin10.Value<=0));
+  end;
   label6.Caption:='Steps : '+inttostr(comsteps);
   PBSuperSpin5Change(self);
 end;
@@ -240,6 +282,8 @@ begin
       inc(hetadvsteps);
     until ((w>PBSuperSpin3.value+eps) or (PBSuperspin4.Value<=0));
   end;
+
+
   label10.Caption:='Steps : '+inttostr(hetadvsteps);
   PBSuperSpin5Change(self);
 
@@ -374,7 +418,8 @@ begin
     grafiekskik[grafiekpunte].homo:=0;
   end;
 
-  gemeenskapsgrootte:=trunc(PBSuperSpin8.Value);
+  if checkbox6.checked then gemeenskapsgrootte:=(PBSuperSpin9.Value) else gemeenskapsgrootte:=(PBSuperSpin8.Value);
+
 //    if form1.checkbox7.Checked then
     form1.maakcdf(gemeenskapsgrootte);
   repeat  //Doen eers die gemeenskapsgrootte-lus
@@ -488,7 +533,7 @@ form1.checkbox11.checked:=False;
           PBSuperSpin5Change(self);
 
           s:=floattostrf(MCteller,fffixed,8,0)
-               +', Com: '+floattostrf(gemeenskapsgrootte,fffixed,4,0)
+               +', Com: '+floattostrf(gemeenskapsgrootte,fffixed,6,3)
                +', HetAdv: '+floattostrf(hetadv,fffixed,6,5)
                +', HomAdv: '+floattostrf(homadv,fffixed,6,5)
                +', Age: '+floattostrf(age,fffixed,6,0);
@@ -515,13 +560,20 @@ form1.checkbox11.checked:=False;
       Form1.pasdrempelsaan;
 //      drempels[skoon]:=drempelskaal/HeterozygoticAdvantage;
 
-    until ( ( (checkbox4.checked=False) and ((hetadv>PBSuperspin3.Value+eps) or (PBSuperspin4.Value<=0) or (MCBesig1=False)))
+    until ( ( (checkbox4.checked=False) and ((hetadv>PBSuperspin3.Value+eps) or (PBSuperspin4.Value<=0) ))
               or
-            ((checkbox4.checked=True) and ((abs(hetadv)<abs(PBSuperSpin2.value)) or (PBSuperspin2.Value=0) or (PBSuperspin4.Value=0) or ((PBSuperspin2.Value/PBSuperspin3.value)<=0)))
+            ((checkbox4.checked=True) and ((abs(hetadv)<abs(PBSuperSpin2.value)) or (PBSuperspin2.Value=0) or (PBSuperspin4.Value=0) or ((PBSuperspin2.Value/PBSuperspin3.value)<=0))
+            or (MCBesig1=False))
            );  //hetero-lus
 
-    gemeenskapsgrootte:=gemeenskapsgrootte+trunc(PBSuperSpin10.Value);{if form1.checkbox7.Checked then} Form1.maakcdf(gemeenskapsgrootte);
-  until ((gemeenskapsgrootte>PBSuperSpin9.Value+eps) or (PBSuperSpin10.Value<=0) or (MCBesig1=False));  //gemeenskapsgrootte-lus
+
+    if checkbox6.checked then gemeenskapsgrootte:=(gemeenskapsgrootte*((PBSuperspin9.Value-PBSuperspin10.Value)/PBSuperspin9.Value))
+      else gemeenskapsgrootte:=gemeenskapsgrootte+(PBSuperSpin10.Value);{if form1.checkbox7.Checked then}
+    if not(form1.checkbox7.Checked) then gemeenskapsgrootte:=trunc(gemeenskapsgrootte);  //Plat verspreiding
+      Form1.maakcdf(gemeenskapsgrootte);
+  until ( (MCBesig1=False) or
+          ((checkbox6.checked=False) and (gemeenskapsgrootte>PBSuperSpin9.Value+eps) or (PBSuperSpin10.Value<=0)) or  //gemeenskapsgrootte-lus
+          ((checkbox6.checked=True) and (gemeenskapsgrootte<PBSuperSpin8.Value) or (PBSuperSpin8.value<=0) or (PBSuperSpin10.Value<=0)));
 
   if MCBesig1=True then
   begin
@@ -614,6 +666,11 @@ end;
 procedure TMCForm.CheckBox4Click(Sender: TObject);
 begin
   PBSuperSpin2Change(self);
+end;
+
+procedure TMCForm.CheckBox6Click(Sender: TObject);
+begin
+  PBSuperSpin8Change(self);
 end;
 
 end.

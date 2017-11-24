@@ -5,10 +5,25 @@
 
 
 (*  What's New
+2017-11-17 v1.49
+- Clear the graphs after a Monte Carlo run if there are too many points, lest it
+leads to an out-of-memory error, or slows things down too much, as is its wont.
+- Fixed an overflow bug that could occur when changing community size limits
+while the logarithmic option is selected.
+- Now also allows fractional community sizes (when the Gaussian distribution is
+selected). Currently to 3 decimal places - let's see if that is sufficient. 
+
+
 2017-11-16 v1.48
 - Also take into account the homozygotic prevalence before declaring extinction
 during Monte Carlo runs.
 - Fixed a file access error that could occur when interrupting a Monte Carlo run.
+- Added Logarithmic option to the Community size in the Monte Carlo function.
+- Improved the ETA estimates - only update at the end of each run, and estimate
+in between by subtracting seconds as they elapse.
+- Added autoscaling of main window to size until scrollbars disappear. This is
+useful when run on a system with a different screen resolution than the one it
+was designed on.
 
 
 2017-11-15 v1.47

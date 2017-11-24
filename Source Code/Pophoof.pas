@@ -102,7 +102,7 @@ type
     procedure CheckBox3Click(Sender: TObject);
     procedure Button6Click(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure maakcdf(v:integer);
+    procedure maakcdf(v:real);
     procedure CheckBox7Click(Sender: TObject);
     procedure Label9Click(Sender: TObject);
     procedure CheckBox8Click(Sender: TObject);
@@ -288,7 +288,7 @@ begin
 end;
 
 
-procedure TForm1.maakcdf(v:integer);
+procedure TForm1.maakcdf(v:real);
 var
   i,j,punte,aantal:integer;
   sigma,variansie,a,aa:real;
@@ -311,19 +311,20 @@ for i:=0 to maksouerhis do ouerhis[i]:=0;
 
   if checkbox7.checked=False then
   begin  //Plat verspreiding
+    PBSuperSpin3.Decimals:=0;
     maakgemeenskaplys; //Maak seker die lys is reg
-    for i:=1 to v do cdf2[i]:=i;
-    cdfstappe:=v;
+    for i:=1 to trunc(v) do cdf2[i]:=i;
+    cdfstappe:=trunc(v);
   end
 
   else
   begin //Gaussverspreiding
-
+    PBSuperspin3.Decimals:=3;
     variansie:=sigma*sigma;
     a:=1/(2*Pi*variansie);
 
 //    cdfbereik:=makscdfbereik;
-    case v of   //Hierdie waardes is geldig vir makscdfstappe <= 600K; Dit spaar heelwat tyd om net die nodige area te bereken
+    case trunc(v) of   //Hierdie waardes is geldig vir makscdfstappe <= 600K; Dit spaar heelwat tyd om net die nodige area te bereken
     0..10:cdfbereik:=5;
     11..100:cdfbereik:=15;
     101..1000:cdfbereik:=36;
@@ -463,7 +464,6 @@ SetProcessAffinityMask( GetCurrentProcess, SysAFMAsk);
 
 b:=trunc(ln(SysAFMask)/ln(2));
 form1.Caption:=form1.Caption+' : CPU '+inttostr(b)+'/'+inttostr(a);
-
 
 
 
@@ -897,6 +897,16 @@ var i:integer;
     h,m,s:integer;
     eta:string;
 begin
+
+  if ((Form1.HorzScrollBar.IsScrollBarVisible) or (Form1.VertScrollBar.IsScrollBarVisible)) then
+  begin
+    form1.AutoSize:=True;
+    form1.ScrollBy(1,1);
+    form1.Repaint;
+    form1.AutoSize:=False;
+  end;
+
+
   inc(tydteller);
   application.ProcessMessages;
 
@@ -934,7 +944,6 @@ begin
 
   if ((besig) or (MCBesig1)) then
   begin
-//    if sktyd<sk then inc(sktyd);
     tydnou:=gettickcount;
     if ((tydnou>tydvorige) and (generasieteller<>vorigegt)) then
     begin
@@ -954,24 +963,30 @@ begin
     if MCBesig1 then
     begin
 //      MCspoed:=(MCspoed*(sktyd-1) + (1000/Timer1.interval)*(MCTeller-vorigeMCt))/(sktyd);
-      MCspoed:=(1000/timer1.Interval)*MCTeller/(tydteller-MCbegin);
-
+      if MCTeller<=0 then MCspoed:=0 else
+      if ((MCTeller<>vorigeMCT) and (tydteller>MCBegin)) then
+      begin
+        MCspoed:=(1000/timer1.Interval)*MCTeller/(tydteller-MCbegin);
+        vorigeMCt:=MCTeller;
+        deltatyd:=gettickcount;
+      end;
 
       if MCSpoed>0 then
       begin
         eta:='ETA : ';
-        ttg:=(MCRuns-MCTeller)/MCSpoed;
+        ttg:=((MCRuns-MCTeller)/MCSpoed)-(gettickcount-deltatyd)/1000;
         h:=trunc(ttg/3600); ttg:=ttg-h*3600; if h>0 then eta:=eta+inttostr(h)+'h';
         m:=trunc(ttg/60);s:=trunc(ttg-m*60);if ((h>0) or (m>0)) then eta:=eta+inttostr(m)+'m';
         eta:=eta+inttostr(s)+'s';
       end else eta:='';
+
+
 
       if ((MCSpoed>0.2) or (MCSpoed<1E-6)) then
         MCForm.label13.Caption:=floattostrF(MCspoed,ffFixed,6,2)+' runs/s'+'   '+eta
       else
         MCForm.label13.Caption:=floattostrF(1/MCspoed,ffFixed,6,2)+' s/run'+'   '+eta;
 
-      vorigeMCt:=MCTeller;
     end;
 
     if checkbox5.checked then vertoonhistogram;
@@ -1030,7 +1045,9 @@ end;
 
 procedure TForm1.PBSuperSpin3Change(Sender: TObject);
 begin
-  gemeenskapsgrootte:=trunc(PBSUperspin3.Value);
+//  gemeenskapsgrootte:=trunc(PBSUperspin3.Value);
+  gemeenskapsgrootte:=(PBSUperspin3.Value);
+
   if gemeenskapsgrootte<1 then gemeenskapsgrootte:=1;
   if gemeenskapsgrootte>0 then scrollbar2.Position:=round(20*ln(gemeenskapsgrootte)) else scrollbar2.Position:=round(20*ln(1));
   maakcdf(gemeenskapsgrootte);
@@ -1118,6 +1135,7 @@ end;
 procedure TForm1.CheckBox7Click(Sender: TObject);
 begin
   PBSuperSpin3Change(self);
+  if checkbox7.Checked then label14.Visible:=True else label14.Visible:=False;
 end;
 
 procedure TForm1.Label9Click(Sender: TObject);
