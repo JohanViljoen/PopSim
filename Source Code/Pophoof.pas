@@ -14,7 +14,7 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ExtCtrls, StdCtrls, TeeProcs, TeEngine, Chart, Series,
   PBNumEdit, PBSuperSpin, Popdefs, Popvertoon,
-  rxPlacemnt, PBSpinEdit, JvExControls, JvChart, JvAppInst;
+  rxPlacemnt, PBSpinEdit, JvExControls, JvChart, JvAppInst, Menus;
 
 type
   TForm1 = class(TForm)
@@ -77,6 +77,8 @@ type
     OpenDialog1: TOpenDialog;
     CheckBox11: TCheckBox;
     JvAppInstances1: TJvAppInstances;
+    ScrollBar5: TScrollBar;
+    Label18: TLabel;
     procedure Button1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ScrollBar1Change(Sender: TObject);
@@ -111,6 +113,7 @@ type
     procedure Button7Click(Sender: TObject);
     procedure Button8Click(Sender: TObject);
     procedure CheckBox11Click(Sender: TObject);
+    procedure ScrollBar5Change(Sender: TObject);
 
   private
     { Private declarations }
@@ -382,7 +385,9 @@ for i:=0 to maksouerhis do ouerhis[i]:=0;
       end;
     end;
   end;
-  beep;
+{$IFDEF KLANKE}
+   beep;
+{$ENDIF}
 //  series1.Clear;for i:=1 to cdfstappe do series1.AddXY(i,cdf2[i]);
 end;
 
@@ -465,7 +470,7 @@ SetProcessAffinityMask( GetCurrentProcess, SysAFMAsk);
 b:=trunc(ln(SysAFMask)/ln(2));
 form1.Caption:=form1.Caption+' : CPU '+inttostr(b)+'/'+inttostr(a);
 
-
+  form1.ScrollBar5Change(self);
 
 
 
@@ -1203,6 +1208,23 @@ begin
   for b:=0 to hoogte-1 do
   for a:=0 to breedte-1 do ouerstat[a,b]:=0;
 {$ENDIF}
+end;
+
+procedure TForm1.ScrollBar5Change(Sender: TObject);
+begin
+//  SetPriorityClass(GetCurrentProcess(),BELOW_NORMAL_PRIORITY_CLASS);   //IDLE_PRIORITY_CLASS, BELOW_NORMAL_PRIORITY_CLASS, NORMAL_PRIORITY_CLASS, ABOVE_NORMAL_PRIORITY_CLASS, HIGH_PRIORITY_CLASS, REALTIME_PRIORITY_CLASS
+  case Scrollbar5.Position of
+//  1:begin SetPriorityClass(GetCurrentProcess(),IDLE_PRIORITY_CLASS); form1.label18.caption:='Priority : Idle'; end;
+  1:begin SetPriorityClass(GetCurrentProcess(),64); form1.label18.caption:='Priority : Idle'; end;
+  2:begin SetPriorityClass(GetCurrentProcess(),16384); form1.label18.caption:='Priority : Below Normal'; end;
+//  2:begin SetPriorityClass(GetCurrentProcess(),NORMAL_PRIORITY_CLASS); form1.label18.caption:='Priority : Normal'; end;
+  3:begin SetPriorityClass(GetCurrentProcess(),32); form1.label18.caption:='Priority : Normal'; end;
+  4:begin SetPriorityClass(GetCurrentProcess(),32768); form1.label18.caption:='Priority : Above Normal'; end;
+//  3:begin SetPriorityClass(GetCurrentProcess(),HIGH_PRIORITY_CLASS); form1.label18.caption:='Priority : High'; end;
+  5:begin SetPriorityClass(GetCurrentProcess(),128); form1.label18.caption:='Priority : High'; end;
+//  4:begin SetPriorityClass(GetCurrentProcess(),REALTIME_PRIORITY_CLASS); form1.label18.caption:='Priority : Realtime'; end;
+  6:begin SetPriorityClass(GetCurrentProcess(),256); form1.label18.caption:='Priority : Realtime'; end;
+  end;
 end;
 
 end.

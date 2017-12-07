@@ -2,9 +2,19 @@
 //{$DEFINE ENKELOUER}         //Used to allow single individual to be both parents
 //{$DEFINE GESLAGTE}          //Divide the population into male and female, and insist that the parents be of different sexes
 {$DEFINE HIDEMULTIPLETYPES} //Hide the controls for Multiple types until we figure out how to use it
+//{$DEFINE KLANKE}            //Make diagnostic beeps
 
 
 (*  What's New
+2017-12-05 v1.50
+- Added a control to set the CPU priority of the program; this is especially
+ useful when all cores are used, making the computer sluggish if the priorities
+ are too high. Current choices are Idle, Below Normal, Normal, Above Normal,
+ High, and Realtime.
+- Removed diagnostic beeps (compiler directive KLANKE)
+- Tweaked screen positions & spelling
+- Updated Monte Carlo Community Size options to 4 decimals
+
 2017-11-17 v1.49
 - Clear the graphs after a Monte Carlo run if there are too many points, lest it
 leads to an out-of-memory error, or slows things down too much, as is its wont.
@@ -23,7 +33,7 @@ during Monte Carlo runs.
 in between by subtracting seconds as they elapse.
 - Added autoscaling of main window to size until scrollbars disappear. This is
 useful when run on a system with a different screen resolution than the one it
-was designed on.
+was designed on. (Remains messy on a 640x480 screen.)
 
 
 2017-11-15 v1.47

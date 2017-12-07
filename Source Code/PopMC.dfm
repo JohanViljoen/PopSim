@@ -63,13 +63,13 @@ object MCForm: TMCForm
         Caption = 'Steps: '
       end
       object PBSuperSpin8: TPBSuperSpin
-        Left = 56
+        Left = 48
         Top = 16
-        Width = 81
+        Width = 89
         Height = 22
         Cursor = crDefault
         Alignment = taRightJustify
-        Decimals = 0
+        Decimals = 4
         MaxValue = 1000000
         MinValue = 1
         NumberFormat = Standard
@@ -81,13 +81,13 @@ object MCForm: TMCForm
         Wrap = False
       end
       object PBSuperSpin9: TPBSuperSpin
-        Left = 56
+        Left = 48
         Top = 40
-        Width = 81
+        Width = 89
         Height = 22
         Cursor = crDefault
         Alignment = taRightJustify
-        Decimals = 0
+        Decimals = 4
         MaxValue = 1000000
         MinValue = 1
         NumberFormat = Standard
@@ -99,13 +99,13 @@ object MCForm: TMCForm
         Wrap = False
       end
       object PBSuperSpin10: TPBSuperSpin
-        Left = 72
+        Left = 64
         Top = 64
-        Width = 65
+        Width = 73
         Height = 22
         Cursor = crDefault
         Alignment = taRightJustify
-        Decimals = 0
+        Decimals = 4
         MaxValue = 100000
         NumberFormat = Standard
         OnChange = PBSuperSpin8Change
@@ -130,7 +130,7 @@ object MCForm: TMCForm
       Top = 104
       Width = 145
       Height = 113
-      Caption = 'Heterozygotic Advantage'
+      Caption = 'Heterozygous Advantage'
       TabOrder = 1
       object Label7: TLabel
         Left = 16
@@ -161,9 +161,9 @@ object MCForm: TMCForm
         Caption = 'Steps: '
       end
       object PBSuperSpin2: TPBSuperSpin
-        Left = 64
+        Left = 56
         Top = 19
-        Width = 68
+        Width = 76
         Height = 22
         Cursor = crDefault
         Alignment = taRightJustify
@@ -179,9 +179,9 @@ object MCForm: TMCForm
         Wrap = False
       end
       object PBSuperSpin3: TPBSuperSpin
-        Left = 64
+        Left = 56
         Top = 43
-        Width = 68
+        Width = 76
         Height = 22
         Cursor = crDefault
         Alignment = taRightJustify
@@ -197,9 +197,9 @@ object MCForm: TMCForm
         Wrap = False
       end
       object PBSuperSpin4: TPBSuperSpin
-        Left = 72
+        Left = 64
         Top = 67
-        Width = 60
+        Width = 68
         Height = 22
         Cursor = crDefault
         Alignment = taRightJustify
@@ -356,7 +356,7 @@ object MCForm: TMCForm
       Top = 88
       Width = 145
       Height = 129
-      Caption = 'Homozygotic Advantage'
+      Caption = 'Homozygous Advantage'
       TabOrder = 5
       object Label17: TLabel
         Left = 16
@@ -387,9 +387,9 @@ object MCForm: TMCForm
         Caption = 'Steps: '
       end
       object PBSuperSpin13: TPBSuperSpin
-        Left = 64
+        Left = 56
         Top = 35
-        Width = 68
+        Width = 76
         Height = 22
         Cursor = crDefault
         Alignment = taRightJustify
@@ -405,9 +405,9 @@ object MCForm: TMCForm
         Wrap = False
       end
       object PBSuperSpin14: TPBSuperSpin
-        Left = 64
+        Left = 56
         Top = 59
-        Width = 68
+        Width = 76
         Height = 22
         Cursor = crDefault
         Alignment = taRightJustify
@@ -443,7 +443,7 @@ object MCForm: TMCForm
         Top = 16
         Width = 121
         Height = 17
-        Caption = '= Heterozygotic Adv.'
+        Caption = '= Heterozygous Adv.'
         TabOrder = 3
         OnClick = CheckBox3Click
       end

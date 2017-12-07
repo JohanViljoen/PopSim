@@ -1,7 +1,7 @@
 object Form1: TForm1
   Left = 406
   Top = 209
-  Width = 737
+  Width = 740
   Height = 487
   Caption = 'PopSim'
   Color = clBtnFace
@@ -29,6 +29,33 @@ object Form1: TForm1
     Width = 28
     Height = 13
     Caption = 'gen/s'
+  end
+  object Label18: TLabel
+    Left = 624
+    Top = 110
+    Width = 40
+    Height = 13
+    Caption = 'Priority : '
+  end
+  object Button7: TButton
+    Left = 624
+    Top = 98
+    Width = 46
+    Height = 25
+    Caption = 'Save'
+    TabOrder = 6
+    Visible = False
+    OnClick = Button7Click
+  end
+  object Button8: TButton
+    Left = 675
+    Top = 98
+    Width = 46
+    Height = 25
+    Caption = 'Load'
+    TabOrder = 7
+    Visible = False
+    OnClick = Button8Click
   end
   object Button2: TButton
     Left = 624
@@ -413,7 +440,7 @@ object Form1: TForm1
       Top = 53
       Width = 131
       Height = 13
-      Caption = 'Heterozygotic Advantage %'
+      Caption = 'Heterozygous Advantage %'
     end
     object Label17: TLabel
       Left = 8
@@ -467,7 +494,7 @@ object Form1: TForm1
       Top = 77
       Width = 116
       Height = 13
-      Caption = 'Homozygotic Advantage'
+      Caption = 'Homozygous Advantage'
     end
     object Label16: TLabel
       Left = 224
@@ -577,26 +604,6 @@ object Form1: TForm1
     TabOrder = 5
     OnClick = Button6Click
   end
-  object Button7: TButton
-    Left = 624
-    Top = 98
-    Width = 46
-    Height = 25
-    Caption = 'Save'
-    TabOrder = 6
-    Visible = False
-    OnClick = Button7Click
-  end
-  object Button8: TButton
-    Left = 675
-    Top = 98
-    Width = 46
-    Height = 25
-    Caption = 'Load'
-    TabOrder = 7
-    Visible = False
-    OnClick = Button8Click
-  end
   object CheckBox11: TCheckBox
     Left = 352
     Top = 80
@@ -605,6 +612,18 @@ object Form1: TForm1
     Caption = 'Parent Histogram'
     TabOrder = 8
     OnClick = CheckBox11Click
+  end
+  object ScrollBar5: TScrollBar
+    Left = 624
+    Top = 96
+    Width = 97
+    Height = 12
+    Max = 6
+    Min = 1
+    PageSize = 0
+    Position = 3
+    TabOrder = 9
+    OnChange = ScrollBar5Change
   end
   object Timer1: TTimer
     Interval = 333
@@ -632,7 +651,8 @@ object Form1: TForm1
       'CheckBox7.Checked'
       'CheckBox8.Checked'
       'CheckBox9.Checked'
-      'CheckBox10.Checked')
+      'CheckBox10.Checked'
+      'ScrollBar5.Position')
     StoredValues = <>
     Left = 160
     Top = 208

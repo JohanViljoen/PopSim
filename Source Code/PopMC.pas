@@ -343,7 +343,10 @@ begin
   ss:=trunc(tt);
   MCForm.label13.Caption:='Time : '+inttostr(h)+'h'+inttostr(m)+'m'+inttostr(ss)+'s';
   if IsOpen(uitleer) then begin flush(uitleer);closefile(uitleer);end;
-  Button1.Caption:='Run';beep;
+  Button1.Caption:='Run';
+{$IFDEF KLANKE}
+   beep;
+{$ENDIF}
 
 end;
 
