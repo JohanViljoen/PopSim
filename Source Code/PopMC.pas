@@ -239,7 +239,7 @@ begin
   if checkbox6.Checked then
   begin  //Logaritmies
     w:=PBSuperSpin9.value;
-    if PBSuperSpin9.Value>0 then
+    if ((PBSuperSpin9.Value>0) and (PBSuperspin10.value>0)) then
     repeat
       w:=(w*((PBSuperspin9.Value-PBSuperspin10.Value)/(PBSuperspin9.Value)));
       if not(form1.checkbox7.Checked) then w:=trunc(w);  //Plat verspreiding
@@ -270,10 +270,12 @@ begin
   if checkbox4.Checked then
   begin  //Logaritmies
     w:=PBSuperspin3.value;
+    if ((PBSuperspin3.Value>0) and (PBSuperspin4.value>0)) then
     repeat
-      w:=w/(1+PBSuperspin4.Value);
+        w:=(w*((PBSuperspin3.Value-PBSuperspin4.Value)/(PBSuperspin3.Value)));
+//     w:=w/(1+PBSuperspin4.Value);
       inc(hetadvsteps);
-    until ((abs(w)<abs(PBSuperSpin2.value)) or (PBSuperspin2.Value=0) or (PBSuperspin4.Value=0) or ((PBSuperspin2.Value/PBSuperspin3.value)<=0));
+    until ((abs(w)<abs(PBSuperSpin2.value)) or (PBSuperspin2.Value=0) or (PBSuperspin4.Value=0) or ((PBSuperspin2.Value/(PBSuperspin3.value))<=0));
   end else
   begin  //Linieêr
     w:=PBSuperspin2.value;
@@ -556,7 +558,9 @@ form1.checkbox11.checked:=False;
         form1.pasdrempelsaan;
       until ((checkbox3.checked=True) or (homadv>PBSuperspin14.Value+eps) or (PBSuperspin15.Value<=0) or (MCBesig1=False));  //homosigotiese-lus
 
-      if checkbox4.checked then hetadv:=hetadv/(1+PBSuperspin4.Value) else hetadv:=hetadv+PBSuperSpin4.Value;
+      if ((checkbox4.checked) and (PBSuperspin3.value>0) and (PBSuperspin4.value>0)) then hetadv:=hetadv*((PBSuperspin3.Value-PBSuperspin4.Value)/(PBSuperspin3.Value))
+        else hetadv:=hetadv+PBSuperSpin4.Value;
+
       HeterozygoticAdvantage:=1+hetadv/100;
 //      ddrempel:=drempelskaal/HeterozygoticAdvantage;
 //      drempels[skoon]:=ddrempel;
@@ -570,7 +574,7 @@ form1.checkbox11.checked:=False;
            );  //hetero-lus
 
 
-    if checkbox6.checked then gemeenskapsgrootte:=(gemeenskapsgrootte*((PBSuperspin9.Value-PBSuperspin10.Value)/PBSuperspin9.Value))
+    if ((checkbox6.checked) and (PBSuperspin9.value>0) and (PBSuperspin10.value>0)) then gemeenskapsgrootte:=(gemeenskapsgrootte*((PBSuperspin9.Value-PBSuperspin10.Value)/PBSuperspin9.Value))
       else gemeenskapsgrootte:=gemeenskapsgrootte+(PBSuperSpin10.Value);{if form1.checkbox7.Checked then}
     if not(form1.checkbox7.Checked) then gemeenskapsgrootte:=trunc(gemeenskapsgrootte);  //Plat verspreiding
       Form1.maakcdf(gemeenskapsgrootte);

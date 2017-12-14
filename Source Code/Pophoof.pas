@@ -471,6 +471,7 @@ b:=trunc(ln(SysAFMask)/ln(2));
 form1.Caption:=form1.Caption+' : CPU '+inttostr(b)+'/'+inttostr(a);
 
   form1.ScrollBar5Change(self);
+//  if PBSuperSpin3.value<1 then PBSuperspin3.value:=150;
 
 
 
@@ -707,6 +708,7 @@ end;
 
 procedure TForm1.Button3Click(Sender: TObject);
 begin
+  if PBSuperspin3.Value<1 then PBSUperspin3.value:=100;
   if vertoon then vertoonblad.show;
   vorigegt:=generasieteller;
   tydvorige:=Gettickcount;

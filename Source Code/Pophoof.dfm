@@ -195,8 +195,6 @@ object Form1: TForm1
       Width = 41
       Height = 17
       Caption = 'W'
-      Checked = True
-      State = cbChecked
       TabOrder = 6
       OnClick = CheckBox10Click
     end
@@ -621,7 +619,7 @@ object Form1: TForm1
     Max = 6
     Min = 1
     PageSize = 0
-    Position = 3
+    Position = 2
     TabOrder = 9
     OnChange = ScrollBar5Change
   end

@@ -7,6 +7,12 @@
 
 (*  What's New
 2017-12-05 v1.50
+- Changed logarithmic behaviour of Community Size and Heterozygous Advantage to
+be consistent. When 'Log' is selected, 'Step Size' now becomes the largest
+(final) step. Also improved error checking.
+- Set default priority to 'Below Normal'
+
+2017-12-05 v1.50
 - Added a control to set the CPU priority of the program; this is especially
  useful when all cores are used, making the computer sluggish if the priorities
  are too high. Current choices are Idle, Below Normal, Normal, Above Normal,
