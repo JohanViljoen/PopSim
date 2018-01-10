@@ -83,6 +83,7 @@ type
     procedure CheckBox3Click(Sender: TObject);
     procedure CheckBox4Click(Sender: TObject);
     procedure CheckBox6Click(Sender: TObject);
+    procedure PBSuperSpin4Change(Sender: TObject);
   private
     { Private declarations }
   public
@@ -138,8 +139,8 @@ end;
 procedure herstelstatus;
 begin
   if hetstatus=False then exit;
-  HeterozygoticAdvantage:=statrek.heta;Form1.PBSuperSpin1.Text:=floattostrF(100*(statrek.heta-1),fffixed,6,5);
-  HomozygoticAdvantage:=statrek.homa;Form1.PBSuperSpin4.Text:=floattostrF(100*(statrek.homa-1),fffixed,6,5);
+  HeterozygoticAdvantage:=statrek.heta;Form1.PBSuperSpin1.Text:=floattostrF(100*(statrek.heta-1),fffixed,8,7);
+  HomozygoticAdvantage:=statrek.homa;Form1.PBSuperSpin4.Text:=floattostrF(100*(statrek.homa-1),fffixed,8,7);
   denovo:=statrek.dn;Form1.PBSuperSpin2.Text:=floattostrf(denovo*1E6/denovoskaal,fffixed,6,5);
   breedte:=statrek.b;form1.ScrollBar3.Position:=breedte;form1.ScrollBar3Change(Form1);
   hoogte:=statrek.h;form1.ScrollBar4.Position:=hoogte;Form1.ScrollBar4Change(Form1);
@@ -270,7 +271,7 @@ begin
   if checkbox4.Checked then
   begin  //Logaritmies
     w:=PBSuperspin3.value;
-    if ((PBSuperspin3.Value>0) and (PBSuperspin4.value>0)) then
+    if ((PBSuperspin3.Value>0) and (PBSuperspin4.value>0) and (PBSuperspin3.value>PBSuperspin2.value) and (PBSuperspin2.value>0) and (PBSuperspin3.value>PBSuperspin4.value)) then
     repeat
         w:=(w*((PBSuperspin3.Value-PBSuperspin4.Value)/(PBSuperspin3.Value)));
 //     w:=w/(1+PBSuperspin4.Value);
@@ -478,6 +479,9 @@ begin
             draerteller:=1;siekteller:=0;
           end else //Inisieer met beginvoorkoms
           begin
+            for b:=0 to langgemiddeld-1 do stabiliteitsensor[b]:=langgemiddeld*2; //Initialise the stability sensor with values that will first need to be pushed out of the pipeline before it can trigger.
+            stabiel:=False;
+
             if ((hetinis=False) or (CheckBox5.checked=False) or ((draerteller=0) and (siekteller=0))) then
             for b:=0 to hoogte -1 do
             begin
@@ -526,7 +530,7 @@ begin
 //            if (((generasieteller-1) mod grafiekskoonmaakdrempel)>=grafiekskoonmaakdrempel-4) then begin form1.series1.clear;Form1.series2.Clear;end;
             inc(age);
             if draerteller>maxcolony then maxcolony:=draerteller;
-          until (((draerteller=0) and (siekteller=0)) or ((radiobutton1.Checked=True) and (draerteller>=PBSuperSpin1.value)) {or ((radiobutton2.Checked=True) and (stabiel=True))} or (age>=PBSuperSpin6.Value) or (MCBesig1=False));
+          until (((draerteller=0) and (siekteller=0)) or ((radiobutton1.Checked=True) and (draerteller>=PBSuperSpin1.value)) or ((radiobutton2.Checked=True) and (stabiel=True)) or (age>=PBSuperSpin6.Value) or (MCBesig1=False));
 
 {$IFDEF OUERS}
 form1.checkbox11.checked:=True;
@@ -558,8 +562,9 @@ form1.checkbox11.checked:=False;
         form1.pasdrempelsaan;
       until ((checkbox3.checked=True) or (homadv>PBSuperspin14.Value+eps) or (PBSuperspin15.Value<=0) or (MCBesig1=False));  //homosigotiese-lus
 
-      if ((checkbox4.checked) and (PBSuperspin3.value>0) and (PBSuperspin4.value>0)) then hetadv:=hetadv*((PBSuperspin3.Value-PBSuperspin4.Value)/(PBSuperspin3.Value))
-        else hetadv:=hetadv+PBSuperSpin4.Value;
+      if ((checkbox4.checked) and (PBSuperspin3.Value>0) and (PBSuperspin4.value>0) and (PBSuperspin3.value>PBSuperspin2.value) and (PBSuperspin2.value>0) and (PBSuperspin3.value>PBSuperspin4.value))
+        then hetadv:=hetadv*((PBSuperspin3.Value-PBSuperspin4.Value)/(PBSuperspin3.Value))
+          else hetadv:=hetadv+PBSuperSpin4.Value;
 
       HeterozygoticAdvantage:=1+hetadv/100;
 //      ddrempel:=drempelskaal/HeterozygoticAdvantage;
@@ -678,6 +683,11 @@ end;
 procedure TMCForm.CheckBox6Click(Sender: TObject);
 begin
   PBSuperSpin8Change(self);
+end;
+
+procedure TMCForm.PBSuperSpin4Change(Sender: TObject);
+begin
+  PBSuperSpin2Change(self);
 end;
 
 end.

@@ -133,21 +133,21 @@ object MCForm: TMCForm
       Caption = 'Heterozygous Advantage'
       TabOrder = 1
       object Label7: TLabel
-        Left = 16
+        Left = 8
         Top = 24
         Width = 28
         Height = 13
         Caption = 'Min %'
       end
       object Label8: TLabel
-        Left = 16
+        Left = 8
         Top = 48
         Width = 31
         Height = 13
         Caption = 'Max %'
       end
       object Label9: TLabel
-        Left = 16
+        Left = 8
         Top = 72
         Width = 43
         Height = 13
@@ -197,18 +197,18 @@ object MCForm: TMCForm
         Wrap = False
       end
       object PBSuperSpin4: TPBSuperSpin
-        Left = 64
+        Left = 56
         Top = 67
-        Width = 68
+        Width = 76
         Height = 22
         Cursor = crDefault
         Alignment = taRightJustify
-        Decimals = 3
+        Decimals = 7
         NumberFormat = Standard
-        OnChange = PBSuperSpin2Change
+        OnChange = PBSuperSpin4Change
         TabOrder = 2
         Value = 0.1
-        Increment = 0.001
+        Increment = 1E-7
         RoundValues = False
         Wrap = False
       end

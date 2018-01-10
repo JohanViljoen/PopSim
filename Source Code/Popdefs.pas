@@ -6,7 +6,7 @@ uses
   Graphics;
 
 const
-  psversion='PopSim 1.51  2017-12-09 ';
+  psversion='PopSim 1.53  2018-01-09 ';
   maksbreedte = 10000;
   makshoogte = 10000;
 
@@ -19,7 +19,9 @@ const
 
   makspogings = 50;  //Probeer soveel keer om 'n ouer te kies, en gee dan op
 
-  langgemiddeld = 16;
+  langgemiddeld = 40;
+  stabieldrempel = 11;
+  nuldrempel = langgemiddeld*0.75;
 //  langgemiddeld = 1;
 
   maksgemeenskap = 984610;  // 1E6
@@ -100,7 +102,7 @@ var
   isbesig:Boolean=False;
   vertoon:Boolean=True;
   hoogte,breedte:integer;
-  draergemiddeld:real;
+  draergemiddeld,vorigedraergemiddeld:real;
   siekgemiddeld:real;
   wildgemiddeld:real;
 
@@ -148,8 +150,8 @@ var
   ouerleerteller:integer;
 {$ENDIF}
 
-//  stabiliteitsensor:array[0..langgemiddeld-1] of Boolean;
-//  stabiel:Boolean;
+  stabiliteitsensor:array[0..langgemiddeld-1] of integer;
+  stabiel:Boolean;
 
 
 implementation

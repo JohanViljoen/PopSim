@@ -151,6 +151,7 @@ begin
   button2.Enabled:=False;
   button3.Enabled:=False; //Do not allow running/stopping when initialising
 
+  for b:=0 to langgemiddeld-1 do stabiliteitsensor[b]:=langgemiddeld*2; //Initialise the stability sensor with values that will first need to be pushed out of the pipeline before it can trigger.
 
   for a:=0 to maksbreedte-1 do
   for b:=0 to makshoogte-1 do
@@ -473,7 +474,10 @@ form1.Caption:=form1.Caption+' : CPU '+inttostr(b)+'/'+inttostr(a);
   form1.ScrollBar5Change(self);
 //  if PBSuperSpin3.value<1 then PBSuperspin3.value:=150;
 
-
+//Determine which graphs should be displayed
+  CheckBox8Click(self);
+  CheckBox9Click(self);
+  CheckBox10Click(self);
 
 end;
 
@@ -492,16 +496,17 @@ end;
 
 procedure TForm1.Button2Click(Sender: TObject);
 var
-  a,b,x1,y1,x2,y2,dx,dy,dx2,dy2,i,j:integer;
+  a,b,x1,y1,x2,y2,dx,dy,dx2,dy2,i,j,st:integer;
   ouer1,ouer2:indrekord;
   vorige:word;
   pogingteller:integer;
-  dp:real;
+  dp,vorigedp:real;
 //  geslagverskil:Boolean;
   t:TRGBQuad;
   pp:Pointer;
   lewendebevolking:real;
   stabielteller:integer;
+  nulteller:integer;
   sstat:Boolean;
 
 {$IFDEF OUERS}
@@ -511,7 +516,7 @@ var
 
 begin
   application.ProcessMessages;
-  vorige:=0;
+  vorige:=0;dp:=0;
   if isbesig=False then
   begin
     sstat:=Button2.enabled;Button2.Enabled:=False;
@@ -659,20 +664,46 @@ end;
 //    grafiekskik[grafiekpunte].wild:=100*his[skoon].aantal/(breedte*hoogte-his[dood].aantal);
 
 //    dp:=100*draerteller/(breedte*hoogte-his[dood].aantal);
+    vorigedp:=dp;
     dp:=grafiekskik[grafiekpunte].hetero;
+    vorigedraergemiddeld:=draergemiddeld;
     draergemiddeld:=(draergemiddeld*(langgemiddeld-1)+dp)/langgemiddeld;
 
+
+
 //Toets of die draergemiddeld stabiel is
-(*
-    if dp>=draergemiddeld then stabiliteitsensor[generasieteller mod langgemiddeld]:=True else stabiliteitsensor[generasieteller mod langgemiddeld]:=False;
-    if generasieteller>langgemiddeld then
+    if MCForm.RadioButton2.Checked then
     begin
-      stabielteller:=0;
-      for i:=0 to langgemiddeld-1 do if stabiliteitsensor[i]=True then inc(stabielteller);
-      if (stabielteller=langgemiddeld div 2) then stabiel:=True else stabiel:=False;
-//      if stabiel then chart1.BackColor:=clCream else chart1.BackColor:=clWhite;
-    end else stabiel:=False;
+      if vorigedp=dp then
+        stabiliteitsensor[generasieteller mod langgemiddeld]:=0
+        else
+        begin
+          if draergemiddeld<dp then stabiliteitsensor[generasieteller mod langgemiddeld]:=1
+           else stabiliteitsensor[generasieteller mod langgemiddeld]:=-1;
+        end;
+      if generasieteller>langgemiddeld then
+      begin
+        stabielteller:=0;
+        nulteller:=0;
+        st:=1;
+        repeat
+          if ( (stabiliteitsensor[st-1]*stabiliteitsensor[st])=-1)// or ( (stabiliteitsensor[st-1]=0) and (stabiliteitsensor[st]=0) ) )
+            then inc(stabielteller) else
+          if (stabiliteitsensor[st]=0) then inc(nulteller);
+          inc(st);
+        until st>=langgemiddeld-1;
+        if ((stabielteller>=stabieldrempel) or (nulteller>=nuldrempel)) then stabiel:=True else stabiel:=False;
+
+(*
+//***************
+        grafiekskik[grafiekpunte].wild:=draergemiddeld;
+        grafiekskik[grafiekpunte].homo:=grafiekskik[grafiekpunte].wild*stabielteller/stabieldrempel;
+        if stabiel then chart1.BackColor:=clCream else chart1.BackColor:=clWhite;
+//****************
 *)
+      end else stabiel:=False;
+    end;
+
 
 
 //    siekgemiddeld:=(siekgemiddeld*(langgemiddeld-1)+100*his[beide].aantal/(breedte*hoogte-his[dood].aantal))/langgemiddeld;
@@ -708,6 +739,7 @@ end;
 
 procedure TForm1.Button3Click(Sender: TObject);
 begin
+  generasieteller:=0;
   if PBSuperspin3.Value<1 then PBSUperspin3.value:=100;
   if vertoon then vertoonblad.show;
   vorigegt:=generasieteller;
@@ -834,6 +866,7 @@ begin
     label4.Caption:=floattostrf(HeterozygoticAdvantage,ffFixed,5,4);
     pasdrempelsaan;
     sktyd:=0;
+//    generasieteller:=0;
 end;
 
 procedure TForm1.PBSuperSpin4Change(Sender: TObject);

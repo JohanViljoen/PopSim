@@ -6,7 +6,20 @@
 
 
 (*  What's New
-2017-12-05 v1.50
+2018-01-09 v1.53
+- Fixed a bug that sometimes resulted in graphs being displayed when it should
+not have been.
+- Activated the stability sensor, to determine when the population levels have
+stabilised: this should help to speed up the equilibrium level runs.
+
+
+2017-12-18 v1.52
+- Increased the resolution of the heterozygous step size to 7 decimals.
+- Improved error checking on the heterozygous loop iteration computation.
+
+
+
+2017-12-05 v1.51
 - Changed logarithmic behaviour of Community Size and Heterozygous Advantage to
 be consistent. When 'Log' is selected, 'Step Size' now becomes the largest
 (final) step. Also improved error checking.

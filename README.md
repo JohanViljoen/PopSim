@@ -5,7 +5,7 @@ Operating System: Microsoft Windows
 
 Language: Delphi 6
 
-v1.51 2017-12-09
+v1.53 2018-01-09
 
-Started on a user manual too.
+
 
