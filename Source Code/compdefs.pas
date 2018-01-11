@@ -3,21 +3,28 @@
 //{$DEFINE GESLAGTE}          //Divide the population into male and female, and insist that the parents be of different sexes
 {$DEFINE HIDEMULTIPLETYPES} //Hide the controls for Multiple types until we figure out how to use it
 //{$DEFINE KLANKE}            //Make diagnostic beeps
+//{$DEFINE SHOWSTABTRIGGER}   //Display the moving average and the trigger signal used to determine whether prevalence has stabilised
 
 
 (*  What's New
+2018-01-11 v1.54
+- Added a compiler directive to control the display of the stability trigger
+signals.
+- Added the logarithmic option to the homozygous range in the MC function.
+- Fixed a bug which prevented negative selective advantage values from stepping
+logarithmically.
+- Use total prevalence (heterozygotes+homozygotes) as threshold during MC runs,
+rather than just the heterozygotes as was done hitherto.
+
 2018-01-09 v1.53
 - Fixed a bug that sometimes resulted in graphs being displayed when it should
 not have been.
 - Activated the stability sensor, to determine when the population levels have
 stabilised: this should help to speed up the equilibrium level runs.
 
-
 2017-12-18 v1.52
 - Increased the resolution of the heterozygous step size to 7 decimals.
 - Improved error checking on the heterozygous loop iteration computation.
-
-
 
 2017-12-05 v1.51
 - Changed logarithmic behaviour of Community Size and Heterozygous Advantage to

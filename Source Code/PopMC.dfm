@@ -163,7 +163,7 @@ object MCForm: TMCForm
       object PBSuperSpin2: TPBSuperSpin
         Left = 56
         Top = 19
-        Width = 76
+        Width = 81
         Height = 22
         Cursor = crDefault
         Alignment = taRightJustify
@@ -181,7 +181,7 @@ object MCForm: TMCForm
       object PBSuperSpin3: TPBSuperSpin
         Left = 56
         Top = 43
-        Width = 76
+        Width = 81
         Height = 22
         Cursor = crDefault
         Alignment = taRightJustify
@@ -199,7 +199,7 @@ object MCForm: TMCForm
       object PBSuperSpin4: TPBSuperSpin
         Left = 56
         Top = 67
-        Width = 76
+        Width = 81
         Height = 22
         Cursor = crDefault
         Alignment = taRightJustify
@@ -350,6 +350,15 @@ object MCForm: TMCForm
         RoundValues = False
         Wrap = False
       end
+      object CheckBox7: TCheckBox
+        Left = 8
+        Top = 35
+        Width = 129
+        Height = 17
+        Caption = 'Show Stability Trigger'
+        TabOrder = 3
+        Visible = False
+      end
     end
     object GroupBox7: TGroupBox
       Left = 320
@@ -359,21 +368,21 @@ object MCForm: TMCForm
       Caption = 'Homozygous Advantage'
       TabOrder = 5
       object Label17: TLabel
-        Left = 16
+        Left = 8
         Top = 40
         Width = 28
         Height = 13
         Caption = 'Min %'
       end
       object Label18: TLabel
-        Left = 16
+        Left = 8
         Top = 64
         Width = 31
         Height = 13
         Caption = 'Max %'
       end
       object Label19: TLabel
-        Left = 16
+        Left = 8
         Top = 88
         Width = 43
         Height = 13
@@ -389,11 +398,11 @@ object MCForm: TMCForm
       object PBSuperSpin13: TPBSuperSpin
         Left = 56
         Top = 35
-        Width = 76
+        Width = 81
         Height = 22
         Cursor = crDefault
         Alignment = taRightJustify
-        Decimals = 3
+        Decimals = 5
         MaxValue = 10000
         MinValue = -100
         NumberFormat = Standard
@@ -407,11 +416,11 @@ object MCForm: TMCForm
       object PBSuperSpin14: TPBSuperSpin
         Left = 56
         Top = 59
-        Width = 76
+        Width = 81
         Height = 22
         Cursor = crDefault
         Alignment = taRightJustify
-        Decimals = 3
+        Decimals = 5
         MaxValue = 10000
         MinValue = -100
         NumberFormat = Standard
@@ -423,18 +432,18 @@ object MCForm: TMCForm
         Wrap = False
       end
       object PBSuperSpin15: TPBSuperSpin
-        Left = 72
+        Left = 56
         Top = 83
-        Width = 60
+        Width = 81
         Height = 22
         Cursor = crDefault
         Alignment = taRightJustify
-        Decimals = 3
+        Decimals = 7
         NumberFormat = Standard
-        OnChange = PBSuperSpin13Change
+        OnChange = PBSuperSpin15Change
         TabOrder = 2
         Value = 1
-        Increment = 0.001
+        Increment = 1E-7
         RoundValues = False
         Wrap = False
       end
@@ -446,6 +455,15 @@ object MCForm: TMCForm
         Caption = '= Heterozygous Adv.'
         TabOrder = 3
         OnClick = CheckBox3Click
+      end
+      object CheckBox8: TCheckBox
+        Left = 88
+        Top = 108
+        Width = 49
+        Height = 17
+        Caption = 'Log'
+        TabOrder = 4
+        OnClick = CheckBox8Click
       end
     end
   end
@@ -601,7 +619,8 @@ object MCForm: TMCForm
       'CheckBox3.Checked'
       'CheckBox4.Checked'
       'CheckBox5.Checked'
-      'CheckBox6.Checked')
+      'CheckBox6.Checked'
+      'CheckBox8.Checked')
     StoredValues = <>
     Left = 64
     Top = 360
