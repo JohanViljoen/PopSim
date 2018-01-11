@@ -63,12 +63,16 @@ type
     CheckBox4: TCheckBox;
     CheckBox5: TCheckBox;
     CheckBox6: TCheckBox;
+    CheckBox7: TCheckBox;
+    CheckBox8: TCheckBox;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure PBSuperSpin8Change(Sender: TObject);
     procedure PBSuperSpin2Change(Sender: TObject);
     procedure PBSuperSpin13Change(Sender: TObject);
+    procedure PBSuperSpin15Change(Sender: TObject);
+
     procedure Button1Click(Sender: TObject);
     procedure PBSuperSpin5Change(Sender: TObject);
     procedure CheckBox1Click(Sender: TObject);
@@ -84,6 +88,7 @@ type
     procedure CheckBox4Click(Sender: TObject);
     procedure CheckBox6Click(Sender: TObject);
     procedure PBSuperSpin4Change(Sender: TObject);
+    procedure CheckBox8Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -246,7 +251,7 @@ begin
       if not(form1.checkbox7.Checked) then w:=trunc(w);  //Plat verspreiding
 
       inc(comsteps);
-    until ((w<=0) or (abs(w)<abs(PBSuperSpin8.value)) or (PBSuperspin8.Value<=0) or (PBSuperspin10.Value=0) or ((PBSuperspin8.Value/PBSuperspin9.value)<=0));
+    until ((w<=0) or (abs(w)<abs(PBSuperSpin8.value)) or (PBSuperspin8.Value<=0) or (PBSuperspin10.Value<=0) or ((PBSuperspin8.Value/PBSuperspin9.value)<=0));
 
   end else
   begin
@@ -271,9 +276,9 @@ begin
   if checkbox4.Checked then
   begin  //Logaritmies
     w:=PBSuperspin3.value;
-    if ((PBSuperspin3.Value>0) and (PBSuperspin4.value>0) and (PBSuperspin3.value>PBSuperspin2.value) and (PBSuperspin2.value>0) and (PBSuperspin3.value>PBSuperspin4.value)) then
+    if ((PBSuperspin3.Value<>0) and (PBSuperspin4.value<>0) and (abs(PBSuperspin3.value)>abs(PBSuperspin2.value)) and (PBSuperspin2.value<>0) and (abs(PBSuperspin3.value)>abs(PBSuperspin4.value))) then
     repeat
-        w:=(w*((PBSuperspin3.Value-PBSuperspin4.Value)/(PBSuperspin3.Value)));
+        w:=(w*abs(((abs(PBSuperspin3.Value)-abs(PBSuperspin4.Value))/abs(PBSuperspin3.Value))));
 //     w:=w/(1+PBSuperspin4.Value);
       inc(hetadvsteps);
     until ((abs(w)<abs(PBSuperSpin2.value)) or (PBSuperspin2.Value=0) or (PBSuperspin4.Value=0) or ((PBSuperspin2.Value/(PBSuperspin3.value))<=0));
@@ -299,11 +304,23 @@ begin
 
   if tydteller<2 then exit;
   homadvsteps:=0;
-  w:=PBSuperspin13.value;
-  repeat
-    w:=w+PBSuperspin15.Value;
-    inc(homadvsteps);
-  until ((w>PBSuperSpin14.value+eps) or (PBSuperspin15.Value<=0));
+  if CheckBox8.Checked then
+  begin //Logaritmies
+    w:=PBSuperspin14.value;
+    if ((PBSuperspin14.Value<>0) and (PBSuperspin15.value<>0) and (abs(PBSuperspin14.value)>abs(PBSuperspin13.value)) and (PBSuperspin13.value<>0) and (abs(PBSuperspin14.value)>abs(PBSuperspin15.value))) then
+    repeat
+        w:=(w*abs((abs(PBSuperspin14.Value)-abs(PBSuperspin15.Value))/abs(PBSuperspin14.Value)));
+//     w:=w/(1+PBSuperspin4.Value);
+      inc(homadvsteps);
+    until ((abs(w)<abs(PBSuperSpin13.value)) or (PBSuperspin13.Value=0) or (PBSuperspin15.Value=0) or ((PBSuperspin13.Value/(PBSuperspin14.value))<=0));
+  end else
+  begin  //Linieêr
+    w:=PBSuperspin13.value;
+    repeat
+      w:=w+PBSuperspin15.Value;
+      inc(homadvsteps);
+    until ((w>PBSuperSpin14.value+eps) or (PBSuperspin15.Value<=0));
+  end;
   label20.Caption:='Steps : '+inttostr(homadvsteps);
   if MCForm.checkbox3.Checked then homadvsteps:=1;
   PBSuperSpin5Change(self);
@@ -439,7 +456,10 @@ begin
     repeat  //Doen nou die hetero-lus
       if MCBesig1=False then begin maakleerordeliktoe;exit;end;
 
-      if checkbox3.Checked=False then homadv:=PBSuperSpin13.Value else homadv:=hetadv;
+      if checkbox3.Checked=True then homadv:=hetadv else
+      begin
+        if Checkbox8.checked then homadv:=PBSuperSpin14.Value else homadv:=PBSuperspin13.value;
+      end;
 
       HomozygoticAdvantage:=1+homadv/100;
       form1.pasdrempelsaan;
@@ -479,7 +499,7 @@ begin
             draerteller:=1;siekteller:=0;
           end else //Inisieer met beginvoorkoms
           begin
-            for b:=0 to langgemiddeld-1 do stabiliteitsensor[b]:=langgemiddeld*2; //Initialise the stability sensor with values that will first need to be pushed out of the pipeline before it can trigger.
+            for b:=0 to langgemiddeld-1 do stabiliteitsensor[b]:=-langgemiddeld*2; //Initialise the stability sensor with values that will first need to be pushed out of the pipeline before it can trigger.
             stabiel:=False;
 
             if ((hetinis=False) or (CheckBox5.checked=False) or ((draerteller=0) and (siekteller=0))) then
@@ -529,8 +549,8 @@ begin
               form1.Button2Click(self);
 //            if (((generasieteller-1) mod grafiekskoonmaakdrempel)>=grafiekskoonmaakdrempel-4) then begin form1.series1.clear;Form1.series2.Clear;end;
             inc(age);
-            if draerteller>maxcolony then maxcolony:=draerteller;
-          until (((draerteller=0) and (siekteller=0)) or ((radiobutton1.Checked=True) and (draerteller>=PBSuperSpin1.value)) or ((radiobutton2.Checked=True) and (stabiel=True)) or (age>=PBSuperSpin6.Value) or (MCBesig1=False));
+            if (draerteller+siekteller)>maxcolony then maxcolony:=(draerteller+siekteller);
+          until (((draerteller=0) and (siekteller=0)) or ((radiobutton1.Checked=True) and ((draerteller+siekteller)>=PBSuperSpin1.value)) or ((radiobutton2.Checked=True) and (stabiel=True)) or (age>=PBSuperSpin6.Value) or (MCBesig1=False));
 
 {$IFDEF OUERS}
 form1.checkbox11.checked:=True;
@@ -547,22 +567,28 @@ form1.checkbox11.checked:=False;
                +', HomAdv: '+floattostrf(homadv,fffixed,6,5)
                +', Age: '+floattostrf(age,fffixed,6,0);
                if radiobutton1.Checked then
-               s:=s+', Max: '+floattostrf(maxcolony,fffixed,4,0) else
+               s:=s+', Max: '+floattostrf(maxcolony,fffixed,4,0);// else
                s:=s+', Hetprev: '+floattostrf(100*draerteller/(breedte*hoogte),fffixed,6,5)
                    +', Homprev: '+floattostrf(100*siekteller/(breedte*hoogte),fffixed,6,5);
           memo1.lines.add(s);
           writeln(uitleer,s);flush(uitleer);
         end;  //PBSuperspin5.Value iterasies per punt
 
-        if checkbox3.Checked=False then
+        if checkbox3.Checked=True then homadv:=hetadv else
+        begin
+          if ((checkbox8.checked) and (PBSuperspin14.Value<>0) and (PBSuperspin15.value<>0) and (abs(PBSuperspin14.value)>abs(PBSuperspin13.value)) and (PBSuperspin13.value<>0) and (abs(PBSuperspin14.value)>abs(PBSuperspin15.value)))
+           then homadv:=homadv*abs((abs(PBSuperspin14.Value)-abs(PBSuperspin15.Value))/abs(PBSuperspin14.Value))
+          else
           homadv:=homadv+PBSuperSpin15.Value
-            else
-              homadv:=hetadv;
+        end;
         HomozygoticAdvantage:=1+homadv/100;
         form1.pasdrempelsaan;
-      until ((checkbox3.checked=True) or (homadv>PBSuperspin14.Value+eps) or (PBSuperspin15.Value<=0) or (MCBesig1=False));  //homosigotiese-lus
+      until ((checkbox3.checked=True) or
+             ((checkbox8.checked=False) and ((homadv>PBSuperspin14.Value+eps) or (PBSuperspin15.Value<=0))) or
+             ((checkbox8.checked=True) and ( (abs(homadv)<abs(PBSuperSpin13.value)) or (PBSuperspin13.Value=0) or (PBSuperspin15.Value=0) or ((PBSuperspin13.Value/PBSuperspin14.value)<=0)) ) or
+             (MCBesig1=False));  //homosigotiese-lus
 
-      if ((checkbox4.checked) and (PBSuperspin3.Value>0) and (PBSuperspin4.value>0) and (PBSuperspin3.value>PBSuperspin2.value) and (PBSuperspin2.value>0) and (PBSuperspin3.value>PBSuperspin4.value))
+      if ((checkbox4.checked) and (PBSuperspin3.Value<>0) and (PBSuperspin4.value<>0) and (abs(PBSuperspin3.value)>abs(PBSuperspin2.value)) and (PBSuperspin2.value<>0) and (abs(PBSuperspin3.value)>abs(PBSuperspin4.value)))
         then hetadv:=hetadv*((PBSuperspin3.Value-PBSuperspin4.Value)/(PBSuperspin3.Value))
           else hetadv:=hetadv+PBSuperSpin4.Value;
 
@@ -642,6 +668,9 @@ procedure TMCForm.RadioButton1Click(Sender: TObject);
 begin
   if MCBesig1=True then MCForm.Button1Click(self);  //Stop hom as hy loop
   Groupbox4.Visible:=RadioButton2.checked;
+{$IFDEF SHOWSTABTRIGGER}
+  Checkbox7.visible:=RadioButton2.checked;  //Show Stability Trigger
+{$ENDIF}  
   PBSuperSpin1.Visible:=Radiobutton1.Checked;
   Label2.Visible:=RadioButton1.Checked;
 end;
@@ -688,6 +717,17 @@ end;
 procedure TMCForm.PBSuperSpin4Change(Sender: TObject);
 begin
   PBSuperSpin2Change(self);
+end;
+
+procedure TMCForm.PBSuperSpin15Change(Sender: TObject);
+begin
+  PBSuperSpin13Change(self);
+end;
+
+
+procedure TMCForm.CheckBox8Click(Sender: TObject);
+begin
+  PBSuperSpin13Change(self);
 end;
 
 end.

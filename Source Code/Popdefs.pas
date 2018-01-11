@@ -6,7 +6,7 @@ uses
   Graphics;
 
 const
-  psversion='PopSim 1.53  2018-01-09 ';
+  psversion='PopSim 1.54  2018-01-11 ';
   maksbreedte = 10000;
   makshoogte = 10000;
 
@@ -94,6 +94,7 @@ var
 
   his,his2:hisskik;
   generasieteller:integer;
+//  age:integer;
   draerteller:int64;
   siekteller:int64;
   wildteller:int64;

@@ -655,9 +655,14 @@ end;
     inc(grafiekpunte);
     lewendebevolking:=1/((breedte*hoogte)-his[dood].aantal);
     grafiekskik[grafiekpunte].hetero:=100*draerteller*lewendebevolking;
-//if stabiel then grafiekskik[grafiekpunte].homo:=100*draerteller*lewendebevolking else
-    grafiekskik[grafiekpunte].homo:=100*siekteller*lewendebevolking;
-    grafiekskik[grafiekpunte].wild:=100*wildteller*lewendebevolking;
+
+{$IFDEF SHOWSTABTRIGGER}
+    if MCForm.Checkbox7.Checked=False then
+{$ENDIF}    
+    begin
+      grafiekskik[grafiekpunte].homo:=100*siekteller*lewendebevolking;
+      grafiekskik[grafiekpunte].wild:=100*wildteller*lewendebevolking;
+    end;
 
 //    grafiekskik[grafiekpunte].hetero:=100*draerteller/(breedte*hoogte-his[dood].aantal);
 //    grafiekskik[grafiekpunte].homo:=100*his[beide].aantal/(breedte*hoogte-his[dood].aantal);
@@ -672,7 +677,7 @@ end;
 
 
 //Toets of die draergemiddeld stabiel is
-    if MCForm.RadioButton2.Checked then
+    if (MCBesig1 and MCForm.RadioButton2.Checked) then
     begin
       if vorigedp=dp then
         stabiliteitsensor[generasieteller mod langgemiddeld]:=0
@@ -681,7 +686,7 @@ end;
           if draergemiddeld<dp then stabiliteitsensor[generasieteller mod langgemiddeld]:=1
            else stabiliteitsensor[generasieteller mod langgemiddeld]:=-1;
         end;
-      if generasieteller>langgemiddeld then
+      if generasieteller>1 then //langgemiddeld then  //Laat hom minstens langgemiddeld generasies loop
       begin
         stabielteller:=0;
         nulteller:=0;
@@ -694,13 +699,18 @@ end;
         until st>=langgemiddeld-1;
         if ((stabielteller>=stabieldrempel) or (nulteller>=nuldrempel)) then stabiel:=True else stabiel:=False;
 
-(*
+
 //***************
+{$IFDEF SHOWSTABTRIGGER}
+      if MCForm.Checkbox7.Checked then  //Display the moving average and trigger levels using the wild & homo graph lines
+      begin
         grafiekskik[grafiekpunte].wild:=draergemiddeld;
         grafiekskik[grafiekpunte].homo:=grafiekskik[grafiekpunte].wild*stabielteller/stabieldrempel;
-        if stabiel then chart1.BackColor:=clCream else chart1.BackColor:=clWhite;
+//        if stabiel then chart1.BackColor:=clCream else chart1.BackColor:=clWhite;
+      end;
+{$ENDIF}
 //****************
-*)
+
       end else stabiel:=False;
     end;
 
