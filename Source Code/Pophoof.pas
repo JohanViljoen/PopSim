@@ -677,7 +677,7 @@ end;
 
 
 //Toets of die draergemiddeld stabiel is
-    if (MCBesig1 and MCForm.RadioButton2.Checked) then
+    if ((MCBesig1=True) and (doEquilibrium=True)) then
     begin
       if vorigedp=dp then
         stabiliteitsensor[generasieteller mod langgemiddeld]:=0

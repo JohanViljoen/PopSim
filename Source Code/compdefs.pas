@@ -7,6 +7,37 @@
 
 
 (*  What's New
+2018-03-10 v1.55a
+- Fixed a bug which prevented detection of stable population values when doing
+Equilibrium Monte Carlo runs using a template file
+
+2018-02-10 v1.55
+- Modified the nested loops of the Monte Carlo function to use a precompiled
+array of community size, heterozygous advantage, and homozygous advantage
+parameters, to iterate through, rather than modifying the parameters on the fly
+as was done hitherto.
+- Added the option to use a template file (which can and normally would be the
+result file of a previous Monte Carlo run). When selected, the template file is
+read to determine the vital parameters; only the number of runs can be changed,
+if desired, all others are hidden or greyed out.
+- When doing the 'normal' establishment or equilibrium Monte Carlo runs, also
+precompile an array of all parameter combinations as in the template case above,
+and then iterate through this list.
+- Write out this array of parameter combinations into a Template file. Both
+template files and normal MC result files can be used as templates for future
+runs.
+- Added a checkbox just below the 'Run' button on the Monte Carlo form to select
+the option of randomizing the order in which MC runs are executed. This may help
+to improve the accuracy of the ETA estimate, which is still not very accurate,
+due to the fact that some parameter combinations result in much longer iteration
+times than others.
+
+
+2018-01-17 v1.54a
+- Increase the retries to find a parent from 50 to 1000; this becomes an issue
+when using very small community sizes with very large advantages while rare,
+which may result in skewed establishment rates.
+
 2018-01-11 v1.54
 - Added a compiler directive to control the display of the stability trigger
 signals.

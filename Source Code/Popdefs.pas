@@ -6,7 +6,7 @@ uses
   Graphics;
 
 const
-  psversion='PopSim 1.54  2018-01-11 ';
+  psversion='PopSim 1.55a  2018-03-10 ';
   maksbreedte = 10000;
   makshoogte = 10000;
 
@@ -17,7 +17,8 @@ const
   skoon = 2;
   draer = 3;
 
-  makspogings = 50;  //Probeer soveel keer om 'n ouer te kies, en gee dan op
+  makspogings = 1000;  //Probeer soveel keer om 'n ouer te kies, en gee dan op
+  maxtemplate = 50000;  //
 
   langgemiddeld = 40;
   stabieldrempel = 11;
@@ -36,6 +37,7 @@ const
   makscdfstappe = 60000;
   makscdfbereik = 500;
   eps = 1E-12;
+  maksMCdim = 5000;  //Maximum number of steps for any given parameter in the MC runs
 {$IFDEF OUERS}
   maksouerhis = 1000;
 {$ENDIF}
