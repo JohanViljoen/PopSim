@@ -1,3 +1,20 @@
+(*
+    Popsim - a simulation tool to explore the establishment and proliferation of monogenic variations in a diploid population
+    Copyright (C) 2018  JW Viljoen
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*)
 //{$DEFINE OUERS}             //Used to gather statistics on the number of progeny each individual produces
 //{$DEFINE ENKELOUER}         //Used to allow single individual to be both parents
 //{$DEFINE GESLAGTE}          //Divide the population into male and female, and insist that the parents be of different sexes
@@ -7,6 +24,11 @@
 
 
 (*  What's New
+2018-06-23 v1.55b
+- Licensed using GNU General Public License, version 3 (GPL-3.0). No functional
+changes, just added the licensing text to source files and the main program
+title header.
+
 2018-03-10 v1.55a
 - Fixed a bug which prevented detection of stable population values when doing
 Equilibrium Monte Carlo runs using a template file

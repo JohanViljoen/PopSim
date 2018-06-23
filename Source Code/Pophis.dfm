@@ -2,7 +2,7 @@ object Hisblad: THisblad
   Left = 292
   Top = 364
   Width = 702
-  Height = 309
+  Height = 319
   Caption = 'Mutation statistics'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -110,7 +110,7 @@ object Hisblad: THisblad
       'CheckBox4.Checked'
       'CheckBox5.Checked')
     StoredValues = <>
-    Left = 80
+    Left = 112
     Top = 80
   end
 end

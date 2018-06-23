@@ -1,8 +1,8 @@
 object Vertoonblad: TVertoonblad
   Left = 487
   Top = 204
-  Width = 148
-  Height = 156
+  Width = 154
+  Height = 165
   Caption = 'Population Display'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -20,16 +20,16 @@ object Vertoonblad: TVertoonblad
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 132
-    Height = 118
+    Width = 138
+    Height = 127
     Align = alClient
     Caption = 'Panel1'
     TabOrder = 0
     object Image1: TImage
       Left = 1
       Top = 1
-      Width = 130
-      Height = 116
+      Width = 136
+      Height = 125
       Align = alClient
       AutoSize = True
       Picture.Data = {

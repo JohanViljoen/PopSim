@@ -1,15 +1,29 @@
 # PopSim
 Code to simulate the establishment, proliferation and equilibrium levels of monogenic mutations in diploid populations.
 
-Operating System: Microsoft Windows
+## System requirements: ##
+Operating System: Microsoft Windows (XP, 7, 10 - all versions)
 
-Language: Delphi 6
+**Installation:** Copy the Popsim*.exe file to any folder; it is suggested that a dedicated folder be created for this purpose. No installation needed, therefore installation time is simply the time needed to copy/move the file, which should be <1s.
+
+**Demo:** As supplied, the software is populated with default parameters. See 'Popsim User manual.pdf' for instructions.  
+
+**Run Time:** Using a population of 1 million individuals, typical run times are <100ms per generation. When the graphical population display is active, the speed is reduced by ~30%. Monte Carlo runs can easily comprise thousands of different scenarios, sometimes running for thousands of generations - the software displays an estimated time to complete, which may run into hours, or even days, depending on the settings.        
+
+
+Language: Delphi 6.0 (Build 6.240) Update pack 2
 
 v1.55a 2018-03-10
 
 ----------
 
 ***What's New***
+
+2018-06-23 v1.55b
+
+- Licensed using GNU General Public License, version 3 (GPL-3.0). No functional
+changes, just added the licensing text to source files and the main program
+title header.
 
 2018-03-10 v1.55a
 

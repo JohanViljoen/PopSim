@@ -1,8 +1,8 @@
 object MCForm: TMCForm
-  Left = 214
-  Top = 121
+  Left = 245
+  Top = 211
   Width = 491
-  Height = 789
+  Height = 792
   Caption = 'Monte Carlo'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -18,9 +18,24 @@ object MCForm: TMCForm
   OnShow = FormShow
   DesignSize = (
     475
-    751)
+    754)
   PixelsPerInch = 96
   TextHeight = 13
+  object Label21: TLabel
+    Left = 336
+    Top = 22
+    Width = 47
+    Height = 13
+    Caption = 'File Name'
+  end
+  object Label22: TLabel
+    Left = 392
+    Top = 22
+    Width = 38
+    Height = 13
+    Caption = 'Label22'
+    Visible = False
+  end
   object GroupBox1: TGroupBox
     Left = 0
     Top = 40
@@ -226,7 +241,7 @@ object MCForm: TMCForm
       Left = 16
       Top = 16
       Width = 137
-      Height = 81
+      Height = 65
       Caption = 'Run'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -309,7 +324,8 @@ object MCForm: TMCForm
         Cursor = crDefault
         Alignment = taRightJustify
         Decimals = 0
-        MaxValue = 100000
+        MaxValue = 1000000
+        MinValue = 1
         NumberFormat = Standard
         OnChange = PBSuperSpin5Change
         TabOrder = 0
@@ -352,7 +368,7 @@ object MCForm: TMCForm
       end
       object CheckBox7: TCheckBox
         Left = 8
-        Top = 35
+        Top = 43
         Width = 129
         Height = 17
         Caption = 'Show Stability Trigger'
@@ -466,12 +482,20 @@ object MCForm: TMCForm
         OnClick = CheckBox8Click
       end
     end
+    object CheckBox9: TCheckBox
+      Left = 16
+      Top = 84
+      Width = 97
+      Height = 17
+      Caption = 'Random Order'
+      TabOrder = 6
+    end
   end
   object Memo1: TMemo
     Left = 0
     Top = 344
     Width = 472
-    Height = 409
+    Height = 412
     Anchors = [akLeft, akTop, akRight, akBottom]
     ScrollBars = ssVertical
     TabOrder = 1
@@ -594,6 +618,30 @@ object MCForm: TMCForm
       OnClick = CheckBox1Click
     end
   end
+  object RadioButton3: TRadioButton
+    Left = 248
+    Top = 0
+    Width = 113
+    Height = 17
+    Caption = 'Use Template'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+    TabOrder = 5
+    OnClick = RadioButton1Click
+  end
+  object Button2: TButton
+    Left = 248
+    Top = 16
+    Width = 81
+    Height = 25
+    Caption = 'Template File'
+    TabOrder = 6
+    OnClick = Button2Click
+  end
   object FormStorage1: TFormStorage
     UseRegistry = False
     StoredProps.Strings = (
@@ -614,15 +662,33 @@ object MCForm: TMCForm
       'PBSuperSpin15.Value'
       'RadioButton1.Checked'
       'RadioButton2.Checked'
+      'RadioButton3.Checked'
       'CheckBox1.Checked'
       'CheckBox2.Checked'
       'CheckBox3.Checked'
       'CheckBox4.Checked'
       'CheckBox5.Checked'
       'CheckBox6.Checked'
-      'CheckBox8.Checked')
-    StoredValues = <>
+      'CheckBox8.Checked'
+      'CheckBox9.Checked'
+      'Label22.Caption')
+    StoredValues = <
+      item
+        Name = 'TemplateFile'
+        Value = ''
+      end>
     Left = 64
+    Top = 360
+  end
+  object OpenDialog1: TOpenDialog
+    Filter = 'Templates|Templ*.txt|MC Files|MC*.txt|All Files|*.*'
+    Left = 128
+    Top = 360
+  end
+  object Timer1: TTimer
+    Interval = 250
+    OnTimer = Timer1Timer
+    Left = 200
     Top = 360
   end
 end

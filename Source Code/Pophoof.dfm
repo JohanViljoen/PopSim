@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 406
-  Top = 209
+  Left = 256
+  Top = 129
   Width = 740
   Height = 487
   Caption = 'PopSim'
