@@ -41,6 +41,11 @@ type
     Series1: TLineSeries;
     Series2: TLineSeries;
     Series3: TLineSeries;
+{$IFDEF SHOWSTABTRIGGER}
+    Series4: TLineSeries;
+    Series5: TLineSeries;
+{$ENDIF}
+   
     Button4: TButton;
     Timer1: TTimer;
     FormStorage1: TFormStorage;
@@ -96,6 +101,8 @@ type
     JvAppInstances1: TJvAppInstances;
     ScrollBar5: TScrollBar;
     Label18: TLabel;
+    CheckBox12: TCheckBox;
+    CheckBox13: TCheckBox;
     procedure Button1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ScrollBar1Change(Sender: TObject);
@@ -131,6 +138,10 @@ type
     procedure Button8Click(Sender: TObject);
     procedure CheckBox11Click(Sender: TObject);
     procedure ScrollBar5Change(Sender: TObject);
+    procedure CheckBox12Click(Sender: TObject);
+    procedure CheckBox13Click(Sender: TObject);
+    procedure CheckBox1KeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
 
   private
     { Private declarations }
@@ -238,6 +249,11 @@ begin
   Series1.Clear;
   series2.Clear;
   series3.Clear;
+{$IFDEF SHOWSTABTRIGGER}
+  series4.Clear;
+  series5.Clear;
+{$ENDIF}
+
   grafiekpunte:=1;
   grafiekpuntevertoon:=0;
 
@@ -442,6 +458,10 @@ begin
   Series1.Clear;
   Series2.Clear;
   Series3.Clear;
+{$IFDEF SHOWSTABTRIGGER}
+  Series4.Clear;
+  Series5.Clear;
+{$ENDIF}
   grafiekpuntevertoon:=0;
   grafiekpunte:=0;
 
@@ -663,8 +683,6 @@ end;
 
     if vertoon then Vertoonblad.Image1.Invalidate;
     inc(generasieteller);
-    //if (((generasieteller-1) mod grafiekskoonmaakdrempel)>=grafiekskoonmaakdrempel-4) then begin series1.clear;series2.Clear;end;
-
     draerteller:=his[draer].aantal;if form1.CheckBox2.checked then for i:=draer+1 to maksstatus do draerteller:=draerteller+his[i].aantal;
     siekteller:=his[beide].aantal;
     wildteller:=his[skoon].aantal;
@@ -674,8 +692,8 @@ end;
     grafiekskik[grafiekpunte].hetero:=100*draerteller*lewendebevolking;
 
 {$IFDEF SHOWSTABTRIGGER}
-    if MCForm.Checkbox7.Checked=False then
-{$ENDIF}    
+//    if MCForm.Checkbox7.Checked=False then
+{$ENDIF}
     begin
       grafiekskik[grafiekpunte].homo:=100*siekteller*lewendebevolking;
       grafiekskik[grafiekpunte].wild:=100*wildteller*lewendebevolking;
@@ -721,8 +739,8 @@ end;
 {$IFDEF SHOWSTABTRIGGER}
       if MCForm.Checkbox7.Checked then  //Display the moving average and trigger levels using the wild & homo graph lines
       begin
-        grafiekskik[grafiekpunte].wild:=draergemiddeld;
-        grafiekskik[grafiekpunte].homo:=grafiekskik[grafiekpunte].wild*stabielteller/stabieldrempel;
+        grafiekskik[grafiekpunte].movingavg:=draergemiddeld;
+        grafiekskik[grafiekpunte].trig:=grafiekskik[grafiekpunte].movingavg*stabielteller/stabieldrempel;
 //        if stabiel then chart1.BackColor:=clCream else chart1.BackColor:=clWhite;
       end;
 {$ENDIF}
@@ -829,6 +847,8 @@ begin
     vertoonblad.clientwidth:=breedte;
     vertoonblad.ClientHeight:=hoogte;
     vertoonblad.show;
+    vertoonblad.UpdateDisplay;
+{
     for b:=0 to hoogte-1 do
     begin
       if b<screen.Height-20 then prentlyn:=vertoonblad.image1.Picture.Bitmap.ScanLine[b] else prentlyn:=vertoonblad.image1.Picture.Bitmap.ScanLine[0];
@@ -836,6 +856,7 @@ begin
       for a:=0 to br do
         prentlyn[a]:=kleureRGB[popskik^[a,b].status];
     end;
+}
   end;
   vertoonblad.Image1.Invalidate;
 end;
@@ -927,6 +948,10 @@ begin
   Series1.Clear;
   Series2.Clear;
   Series3.Clear;
+{$IFDEF SHOWSTABTRIGGER}
+  Series4.Clear;
+  Series5.Clear;
+{$ENDIF}
   grafiekpunte:=0;grafiekpuntevertoon:=0;
 end;
 
@@ -990,7 +1015,11 @@ begin
     checkbox1click(self);
   end;
 
-  if series1.Count>grafiekskoonmaakdrempel then Button4Click(self);  //Maak grafieke skoon as dinge te groot raak
+  if series1.Count>grafiekskoonmaakdrempel then
+  begin
+    Button5Click(self);  //Skryf eers na skyf
+    Button4Click(self);  //Maak grafieke skoon as dinge te groot raak
+  end;
 
   if form1.CheckBox6.Checked then  //Vertoon grafieke
   begin
@@ -1000,6 +1029,10 @@ begin
       Series1.AddXY(series1.count+1,grafiekskik[i].hetero);
       Series2.AddXY(series2.count+1,grafiekskik[i].homo);
       Series3.AddXY(series3.count+1,grafiekskik[i].wild);
+{$IFDEF SHOWSTABTRIGGER}
+      Series4.AddXY(series4.count+1,grafiekskik[i].movingavg);
+      Series5.AddXY(series5.count+1,grafiekskik[i].trig);
+{$ENDIF}
     end;
     grafiekpuntevertoon:=grafiekpunte;
   end;
@@ -1149,12 +1182,18 @@ var
   uitleernaam:string;
   leer:textfile;
   i:integer;
-  s1,d:string;
+  s,s1,s2,d:string;
+  b:integer;
 begin
+
+  s:=Datetostr(Date)+' - '+TimeToStr(Time);s2:='-';for i:=1 to length(s) do if not(s[i] in ['/',':',' ']) then s2:=s2+s[i];
   d:=GetCurrentDir;
-  uitleernaam:=d+'\'+'Sim'+floattostr(HeterozygoticAdvantage)+'.dat';
+  uitleernaam:=d+'\'+'Sim'+floattostr(HeterozygoticAdvantage)+s2+'.dat';
   assignfile(leer,uitleernaam);
   rewrite(leer);
+  s:='Com '+floattostr(gemeenskapsgrootte) +' HetAdv '+FloatToStr(HeterozygoticAdvantage)+' HomAdv '+FloatToStr(HomozygoticAdvantage)+' Pop '+IntToStr(breedte)+'x'+inttostr(hoogte)+' denovo '+floattostr(denovo);
+  writeln(leer,s);
+
   for i:=0 to form1.Series1.Count-1 do
   begin
     s1:=inttostr(i+1)+' '+floattostr(form1.series1.XValues[i])+'  '+floattostr(form1.series1.YValues[i])+' '+floattostr(form1.series2.YValues[i])+'  '+floattostr(form1.series3.YValues[i]);
@@ -1228,6 +1267,24 @@ begin
   series3.Active:=CheckBox10.Checked;
 end;
 
+procedure TForm1.CheckBox12Click(Sender: TObject);
+begin
+{$IFDEF SHOWSTABTRIGGER}
+  series4.LinePen.Visible:=CheckBox12.Checked;
+  series4.Active:=CheckBox12.Checked;
+{$ENDIF}
+end;
+
+procedure TForm1.CheckBox13Click(Sender: TObject);
+begin
+{$IFDEF SHOWSTABTRIGGER}
+  series5.LinePen.Visible:=CheckBox13.Checked;
+  series5.Active:=CheckBox13.Checked;
+{$ENDIF}
+end;
+
+
+
 procedure skryfopset(leernaam:string);
 var uitleer:text;
 begin
@@ -1288,5 +1345,43 @@ begin
   6:begin SetPriorityClass(GetCurrentProcess(),256); form1.label18.caption:='Priority : Realtime'; end;
   end;
 end;
+
+
+
+
+procedure TForm1.CheckBox1KeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+var i:integer;
+begin
+  if ((ssAlt in shift) and (key=67)) then  //Alt-C
+  begin
+    if kleure[skoon]=clBlack then
+    begin  //Alternative colour scheme
+//      checkbox1.Caption:=inttostr(key);
+      kleure[skoon]:=clWhite;   	//0
+      kleure[dood]:=clWhite;    	//1
+      kleure[beide]:=clRed;	   	//2
+      kleure[draer]:=clBlack;    	//3
+    end else
+    begin  //Standard colour scheme
+//      checkbox1.Caption:='Display';
+      kleure[skoon]:=clBlack;   	//0
+      kleure[dood]:=clBlack;    	//1
+      kleure[beide]:=clWhite;   	//2
+      kleure[draer]:=clLime;    	//3
+    end;
+    for i:=0 to maksstatus do
+    begin
+      kleureRGB[i].R := kleure[i] and $ff;
+      kleureRGB[i].G := (kleure[i] and $ff00) shr 8;
+      kleureRGB[i].B := (kleure[i] and $ff0000) shr 16;
+      kleureRGB[i].A:=0;
+    end;
+    vertoonblad.UpdateDisplay;
+  end;
+end;
+
+
+
 
 end.

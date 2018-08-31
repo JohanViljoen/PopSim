@@ -13,11 +13,37 @@ Operating System: Microsoft Windows (XP, 7, 10 - all versions)
 
 Language: Delphi 6.0 (Build 6.240) Update pack 2
 
-v1.55a 2018-03-10
+v1.58 2018-08-31
 
 ----------
 
 ***What's New***
+
+2018-08-31 v1.58
+
+- Added functionality to write prevalence graphs to disk before clearing it when
+the maximum number of points in the graph is reached (currently 100K).
+- Added a header line to the graph files, recording the model parameters.
+- Also include the time and date as part of the graph file name, to prevent
+overwriting. 
+
+2018-08-09 v1.57
+
+- Increase resolution at which HomAdv and HetAdv is displayed and saved.
+- Fixed a bug which resulted in the number of MC runs not always being displayed
+correctly.
+- Fixed a bug in the template file writing which sometimes resulted in the
+wrong mode (establishment/equilibrium) being specified.
+- Added an alternative colour scheme for the population display, which can be
+selected by right-clicking on the population display itself.
+- Changed the key assignment for drawing on the population display: Instead of
+the right mouse button (which is now used to select the colour scheme), use
+Shift or Ctrl with the left button to erase on the population display. 
+
+2018-07-24 v1.56
+
+- Force redraw on mouse-up when manually drawing on the population display
+screen.
 
 2018-06-23 v1.55b
 

@@ -23,7 +23,7 @@ uses
   Graphics;
 
 const
-  psversion='PopSim 1.55b  2018-06-23 (GPL-3.0)';
+  psversion='PopSim 1.58  2018-08-31 (GPL-3.0)';
   maksbreedte = 10000;
   makshoogte = 10000;
 
@@ -88,6 +88,7 @@ type
                     hetero,
                     homo,
                     wild:real;
+                    movingavg,trig:real;
                   end;
 
 
@@ -187,9 +188,17 @@ ouerleerteller:=0;
 
 //  kleure[skoon]:=clWhite;   	//0
   kleure[skoon]:=clBlack;   	//0
-  kleure[dood]:=clMaroon;    	//1
+  kleure[dood]:=clBlack;    	//1
+//  kleure[dood]:=clMaroon;    	//1
+
   kleure[beide]:=clWhite;   	//2
   kleure[draer]:=clLime;    	//3
+
+//  kleure[skoon]:=clWhite;   	//0  //Alternative scheme
+//  kleure[dood]:=clWhite;    	//1
+//  kleure[beide]:=clRed;   	//2
+//  kleure[draer]:=clBlack;    	//3
+
   kleure[draer+1]:=clAqua;  	//4
   kleure[draer+2]:=clFuchsia;
   kleure[draer+3]:=clRed;

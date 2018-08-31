@@ -374,6 +374,7 @@ object MCForm: TMCForm
         Caption = 'Show Stability Trigger'
         TabOrder = 3
         Visible = False
+        OnClick = CheckBox7Click
       end
     end
     object GroupBox7: TGroupBox
@@ -616,6 +617,7 @@ object MCForm: TMCForm
       Caption = 'Graphs'
       TabOrder = 3
       OnClick = CheckBox1Click
+      OnKeyDown = CheckBox1KeyDown
     end
   end
   object RadioButton3: TRadioButton

@@ -116,6 +116,9 @@ type
     procedure Button2Click(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
     procedure skryftemplate;
+    procedure CheckBox7Click(Sender: TObject);
+    procedure CheckBox1KeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
 
   private
     { Private declarations }
@@ -307,6 +310,7 @@ begin
       inc(comsteps);
     until ((w>PBSuperSpin9.Value+eps) or (PBSuperSpin10.Value<=0));
   end;
+  if comsteps<1 then comsteps:=1;
   label6.Caption:='Steps : '+inttostr(comsteps);
   PBSuperSpin5Change(self);
 end;
@@ -327,6 +331,7 @@ begin
 //     w:=w/(1+PBSuperspin4.Value);
       inc(hetadvsteps);
     until ((abs(w)<abs(PBSuperSpin2.value)) or (PBSuperspin2.Value=0) or (PBSuperspin4.Value=0) or ((PBSuperspin2.Value/(PBSuperspin3.value))<=0));
+
   end else
   begin  //Linieêr
     w:=PBSuperspin2.value;
@@ -335,7 +340,7 @@ begin
       inc(hetadvsteps);
     until ((w>PBSuperSpin3.value+eps) or (PBSuperspin4.Value<=0));
   end;
-
+  if hetadvsteps<1 then hetadvsteps:=1;
 
   label10.Caption:='Steps : '+inttostr(hetadvsteps);
   PBSuperSpin5Change(self);
@@ -366,6 +371,8 @@ begin
       inc(homadvsteps);
     until ((w>PBSuperSpin14.value+eps) or (PBSuperspin15.Value<=0));
   end;
+  if homadvsteps<1 then homadvsteps:=1;
+
   label20.Caption:='Steps : '+inttostr(homadvsteps);
   if MCForm.checkbox3.Checked then homadvsteps:=1;
   PBSuperSpin5Change(self);
@@ -720,14 +727,14 @@ form1.checkbox11.checked:=False;
       PBSuperSpin5Change(self);
 
       s:=floattostrf(MCteller,fffixed,8,0)
-               +', Com: '+floattostrf(gemeenskapsgrootte,fffixed,6,3)
-               +', HetAdv: '+floattostrf(hetadv,fffixed,6,5)
-               +', HomAdv: '+floattostrf(homadv,fffixed,6,5)
+               +', Com: '+floattostrf(gemeenskapsgrootte,fffixed,8,5)
+               +', HetAdv: '+floattostrf(hetadv,fffixed,8,7)
+               +', HomAdv: '+floattostrf(homadv,fffixed,8,7)
                +', Age: '+floattostrf(age,fffixed,6,0);
                if doEstablishment then
                s:=s+', Max: '+floattostrf(maxcolony,fffixed,4,0);// else
-               s:=s+', Hetprev: '+floattostrf(100*draerteller/(breedte*hoogte),fffixed,6,5)
-                   +', Homprev: '+floattostrf(100*siekteller/(breedte*hoogte),fffixed,6,5);
+               s:=s+', Hetprev: '+floattostrf(100*draerteller/(breedte*hoogte),fffixed,8,6)
+                   +', Homprev: '+floattostrf(100*siekteller/(breedte*hoogte),fffixed,8,6);
       memo1.lines.add(s);
       writeln(uitleer,s);flush(uitleer);
     end; //Runs per point
@@ -814,7 +821,7 @@ begin
 
 
 {$IFDEF SHOWSTABTRIGGER}
-  Checkbox7.visible:=doEquilibrium;  //Show Stability Trigger
+//  Checkbox7.visible:=doEquilibrium;  //Show Stability Trigger
 {$ENDIF}
 
   PBSuperSpin1.Visible:=doEstablishment;      //Threshold
@@ -857,6 +864,7 @@ end;
 procedure TMCForm.CheckBox4Click(Sender: TObject);
 begin
   PBSuperSpin2Change(self);
+  CheckBox8Click(self);
 end;
 
 procedure TMCForm.CheckBox6Click(Sender: TObject);
@@ -932,8 +940,8 @@ begin
     MCBesig1:=True; Button1.Caption:='Stop';
     writeln(uitleer,form1.Caption);
     writeln(uitleer,s);
-    if doEstablishment then s:='Mutation Establishment';
-    if doEquilibrium then s:='Equilibrium Prevalence';
+    if radiobutton1.Checked then s:='Mutation Establishment';
+    if radiobutton2.Checked then s:='Equilibrium Prevalence';
     writeln(uitleer,s);
 
     s:='Runs:'+floattostrf(PBSuperspin5.value,fffixed,8,0);
@@ -1135,6 +1143,32 @@ begin
       MCForm.Timer1.Enabled:=False;
     end;
   end;  
+end;
+
+procedure TMCForm.CheckBox7Click(Sender: TObject);
+begin
+{$IFDEF SHOWSTABTRIGGER}
+{  form1.Series4.LinePen.Visible:=CheckBox7.Checked;
+  form1.Series5.LinePen.Visible:=CheckBox7.Checked;
+  form1.Series4.Active:=CheckBox7.Checked;
+  form1.Series5.Active:=CheckBox7.Checked;
+  form1.Series4.Active:=True;
+  form1.Series5.Active:=True;
+}
+  Form1.checkbox12.Visible:=CheckBox7.Checked;
+  Form1.checkbox13.Visible:=CheckBox7.Checked;
+{$ENDIF}
+
+end;
+
+procedure TMCForm.CheckBox1KeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if ((ssCtrl in shift) and (ssShift in shift)) then
+  begin
+    Checkbox7.Checked:=not(checkbox7.Checked);
+    CheckBox7Click(self);
+  end;
 end;
 
 end.

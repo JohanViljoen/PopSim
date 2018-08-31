@@ -21,14 +21,19 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, TeEngine, Series, ExtCtrls, TeeProcs, Chart, Popdefs, rxPlacemnt;
+  Dialogs, TeEngine, Series, ExtCtrls, TeeProcs, Chart, Popdefs, rxPlacemnt,
+  Menus;
 
 type
   TVertoonblad = class(TForm)
     FormStorage1: TFormStorage;
     Panel1: TPanel;
     Image1: TImage;
+    PopupMenu1: TPopupMenu;
+    AlternativeColourScheme1: TMenuItem;
+    StandardColourScheme1: TMenuItem;
     procedure FormCreate(Sender: TObject);
+    procedure UpdateDisplay;
     procedure FormResize(Sender: TObject);
     procedure Image1MouseMove(Sender: TObject; Shift: TShiftState; X,
       Y: Integer);
@@ -37,6 +42,12 @@ type
     procedure Image1MouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure AlternativeColourScheme1Click(Sender: TObject);
+    procedure StandardColourScheme1Click(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure FormKeyUp(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
 
 
   private
@@ -49,6 +60,7 @@ type
 var
   Vertoonblad: TVertoonblad;
   bm:integer;
+  deletecarriers:Boolean=False;
 
 implementation
 
@@ -86,6 +98,22 @@ begin
 
 end;
 
+
+procedure TVertoonblad.UpdateDisplay;
+var a,b,br:integer;
+    status:word;
+begin
+    for b:=0 to hoogte-1 do
+    begin
+      if b<screen.Height-20 then prentlyn:=vertoonblad.image1.Picture.Bitmap.ScanLine[b] else prentlyn:=vertoonblad.image1.Picture.Bitmap.ScanLine[0];
+      br:=breedte-1;if br>2*screen.width then br:=2*screen.width;
+      for a:=0 to br do
+        prentlyn[a]:=kleureRGB[popskik^[a,b].status];
+    end;
+
+end;
+
+
 procedure TVertoonblad.FormResize(Sender: TObject);
 begin
 
@@ -103,10 +131,10 @@ procedure TVertoonblad.Image1MouseMove(Sender: TObject; Shift: TShiftState;
 var i,j,waarde,rad,rad2:integer;
 begin
 //  application.processmessages;
-  if ((ssLeft in Shift) or (ssRight in Shift)) and ((x>=0) and (x<breedte) and (y>=0) and (y<hoogte)) then
+  if ((ssLeft in Shift) {or (ssRight in Shift)}) and ((x>=0) and (x<breedte) and (y>=0) and (y<hoogte)) then
   begin
     begin
-      if (ssRight in Shift) then begin waarde:=skoon; rad:=25;end else begin waarde:=bm;rad:=5;end;
+      if (deletecarriers=True) then begin waarde:=skoon; rad:=25;end else begin waarde:=bm;rad:=5;end;
       rad2:=rad*rad;
       begin
         for i:=-rad to rad do
@@ -140,15 +168,69 @@ begin
   if vertoonblad.ClientHeight<screen.Height then hoogte:=vertoonblad.ClientHeight;
   vertoonblad.Image1.Picture.Bitmap.Width:=breedte;
   vertoonblad.Image1.Picture.Bitmap.Height:=hoogte;
+
   form1.scrollbar3.position:=breedte;
   form1.scrollbar4.position:=hoogte;
-
+  UpdateDisplay;
+//  Form1.CheckBox1Click(self);  //Force redraw
 end;
 
 procedure TVertoonblad.FormClose(Sender: TObject;
   var Action: TCloseAction);
 begin
   if MCForm.Visible then MCForm.checkbox2.checked:=False else form1.CheckBox1.checked:=False; 
+end;
+
+procedure TVertoonblad.AlternativeColourScheme1Click(Sender: TObject);
+var i:integer;
+begin
+    begin  //Alternative colour scheme
+      kleure[skoon]:=clWhite;   	//0
+      kleure[dood]:=clMaroon;    	//1
+      kleure[beide]:=clRed;	   	//2
+      kleure[draer]:=clBlack;    	//3
+    end;
+    for i:=0 to maksstatus do
+    begin
+      kleureRGB[i].R := kleure[i] and $ff;
+      kleureRGB[i].G := (kleure[i] and $ff00) shr 8;
+      kleureRGB[i].B := (kleure[i] and $ff0000) shr 16;
+      kleureRGB[i].A:=0;
+    end;
+    Vertoonblad.UpdateDisplay;
+end;
+
+procedure TVertoonblad.StandardColourScheme1Click(Sender: TObject);
+var i:integer;
+begin
+    begin  //Standard colour scheme
+//      checkbox1.Caption:='Display';
+      kleure[skoon]:=clBlack;   	//0
+      kleure[dood]:=clMaroon;    	//1
+      kleure[beide]:=clWhite;   	//2
+      kleure[draer]:=clLime;    	//3
+    end;
+    for i:=0 to maksstatus do
+    begin
+      kleureRGB[i].R := kleure[i] and $ff;
+      kleureRGB[i].G := (kleure[i] and $ff00) shr 8;
+      kleureRGB[i].B := (kleure[i] and $ff0000) shr 16;
+      kleureRGB[i].A:=0;
+    end;
+    Vertoonblad.UpdateDisplay;
+end;
+
+procedure TVertoonblad.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if ((ssCtrl in Shift) or (ssShift in Shift)) then
+    deletecarriers:=True;
+end;
+
+procedure TVertoonblad.FormKeyUp(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  deletecarriers:=False;
 end;
 
 end.

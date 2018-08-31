@@ -1,8 +1,8 @@
 object Form1: TForm1
   Left = 256
-  Top = 129
+  Top = 128
   Width = 740
-  Height = 487
+  Height = 488
   Caption = 'PopSim'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -198,6 +198,26 @@ object Form1: TForm1
       TabOrder = 6
       OnClick = CheckBox10Click
     end
+    object CheckBox12: TCheckBox
+      Left = 240
+      Top = 8
+      Width = 97
+      Height = 17
+      Caption = 'Avg'
+      TabOrder = 7
+      Visible = False
+      OnClick = CheckBox12Click
+    end
+    object CheckBox13: TCheckBox
+      Left = 288
+      Top = 8
+      Width = 49
+      Height = 17
+      Caption = 'Trig'
+      TabOrder = 8
+      Visible = False
+      OnClick = CheckBox13Click
+    end
     object Series1: TLineSeries
       Marks.ArrowLength = 8
       Marks.Visible = False
@@ -235,6 +255,42 @@ object Form1: TForm1
       Marks.ArrowLength = 8
       Marks.Visible = False
       SeriesColor = clBlack
+      Dark3D = False
+      Pointer.InflateMargins = True
+      Pointer.Style = psRectangle
+      Pointer.Visible = False
+      XValues.DateTime = False
+      XValues.Name = 'X'
+      XValues.Multiplier = 1
+      XValues.Order = loAscending
+      YValues.DateTime = False
+      YValues.Name = 'Y'
+      YValues.Multiplier = 1
+      YValues.Order = loNone
+    end
+    object Series4: TLineSeries
+      Active = False
+      Marks.ArrowLength = 8
+      Marks.Visible = False
+      SeriesColor = clLime
+      Dark3D = False
+      Pointer.InflateMargins = True
+      Pointer.Style = psRectangle
+      Pointer.Visible = False
+      XValues.DateTime = False
+      XValues.Name = 'X'
+      XValues.Multiplier = 1
+      XValues.Order = loAscending
+      YValues.DateTime = False
+      YValues.Name = 'Y'
+      YValues.Multiplier = 1
+      YValues.Order = loNone
+    end
+    object Series5: TLineSeries
+      Active = False
+      Marks.ArrowLength = 8
+      Marks.Visible = False
+      SeriesColor = 33023
       Dark3D = False
       Pointer.InflateMargins = True
       Pointer.Style = psRectangle
@@ -356,6 +412,7 @@ object Form1: TForm1
       Caption = 'Display'
       TabOrder = 4
       OnClick = CheckBox1Click
+      OnKeyDown = CheckBox1KeyDown
     end
     object CheckBox6: TCheckBox
       Left = 200

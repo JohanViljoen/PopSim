@@ -1,8 +1,8 @@
 object Vertoonblad: TVertoonblad
-  Left = 487
-  Top = 204
-  Width = 154
-  Height = 165
+  Left = 992
+  Top = 318
+  Width = 212
+  Height = 241
   Caption = 'Population Display'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -14,22 +14,24 @@ object Vertoonblad: TVertoonblad
   Scaled = False
   OnClose = FormClose
   OnCreate = FormCreate
+  OnKeyDown = FormKeyDown
+  OnKeyUp = FormKeyUp
   OnResize = FormResize
   PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 138
-    Height = 127
+    Width = 196
+    Height = 203
     Align = alClient
     Caption = 'Panel1'
     TabOrder = 0
     object Image1: TImage
       Left = 1
       Top = 1
-      Width = 136
-      Height = 125
+      Width = 194
+      Height = 201
       Align = alClient
       AutoSize = True
       Picture.Data = {
@@ -4316,6 +4318,7 @@ object Vertoonblad: TVertoonblad
         1B340000000000000000000000000000000000000000F81FAC41E007AC41C003
         AC418001AC418001AC410000AC410000AC410000AC410000AC410000AC410000
         AC418001AC418001AC41C003AC41E007AC41F01FAC41}
+      PopupMenu = PopupMenu1
       OnMouseDown = Image1MouseDown
       OnMouseMove = Image1MouseMove
       OnMouseUp = Image1MouseUp
@@ -4326,5 +4329,17 @@ object Vertoonblad: TVertoonblad
     StoredValues = <>
     Left = 40
     Top = 24
+  end
+  object PopupMenu1: TPopupMenu
+    Left = 120
+    Top = 32
+    object AlternativeColourScheme1: TMenuItem
+      Caption = 'Alternative Colour Scheme'
+      OnClick = AlternativeColourScheme1Click
+    end
+    object StandardColourScheme1: TMenuItem
+      Caption = 'Standard Colour Scheme'
+      OnClick = StandardColourScheme1Click
+    end
   end
 end
